@@ -8,6 +8,11 @@
 // @domain            www.v2ex.com
 // ==/UserScript==
 
+/**
+ * 签到接口，可以使用axios库发起请求,请求url域名必须通过@domain声明
+ * throw 签到失败并抛出失败原因
+ * return 签到成功并返回成功信息
+ */
 exports.run = async function() {
     var ret = await axios.get('https://www.v2ex.com/mission/daily');
     if (ret.status != 200) throw '需要登录';
@@ -20,6 +25,10 @@ exports.run = async function() {
     throw '失败2';
 };
 
+/**
+ * 检查是否在线接口，可以使用axios库发起请求,请求url域名必须通过@domain声明
+ * return true 代表在线
+ */
 exports.check = async function() {
     var ret = await axios.get('https://www.v2ex.com/mission/daily');
     return ret.status == 200;

@@ -7,7 +7,6 @@ let config = {
 
 chrome.storage.local.get(config, function(data) {
     Object.assign(config, data);
-    console.log('get', config);
 });
 
 export default config;

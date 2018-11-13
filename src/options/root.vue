@@ -80,14 +80,16 @@
 				</ul>
 			</mu-container>
 		</div>
+		<Preview :open.sync="url" @submit="add"></Preview>
 	</div>
 </template>
 <script>
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator';
 import utils from '../common/utils.js'
+import Preview from './pages/Preview.vue'
 
-@Component()
+@Component({ components: { Preview } })
 export default class Root extends Vue {
 	loading = false
 	log = false // 当前查看log的任务
@@ -95,6 +97,7 @@ export default class Root extends Vue {
 	running = false
 	tasks = []
 	sort = { name: 'name', order: 'asc' }
+	url = false // 导入url
 	get columns() {
 		return [{
 			title: "作者",
@@ -189,15 +192,18 @@ export default class Root extends Vue {
 			utils.saveTasks(this.tasks)
 		}
 	}
-	onAdd() {
-		let task = utils.compileTask(this.body.code)
+	add(task) {
+		if (this.url) {
+			this.url = false
+			location.href = '#'
+		}
 		if (!task) return this.$toast.error('格式非法,找不到==UserScript==区域')
 		if (!task.author) task.author = ''
 		if (!task.name) return this.$toast.error('缺少@name')
 		if (!task.domain) return this.$toast.error('缺少@domain')
 		else if (!task.domains) task.domains = [task.domain]
 		task.expire = +task.expire || 900e3// 默认15分钟过期
-		task.enable = false
+		task.enable = true
 		let module = { exports: task }
 		try {
 			new Function('exports', 'module', 'axios', task.code)(module.exports, module, utils.axios)
@@ -210,6 +216,10 @@ export default class Root extends Vue {
 		utils.saveTasks(this.tasks)
 		this.body = false
 		this.$toast.success('添加/修改成功')
+	}
+	onAdd() {
+		let task = utils.compileTask(this.body.code)
+		this.add(task)
 	}
 	toggle(row) {
 		row.enable = !row.enable
@@ -260,8 +270,11 @@ export default class Root extends Vue {
 			}
 		})
 		window.addEventListener('hashchange', e => {
-			console.log(e)
+			this.url = location.hash.slice(1)
+			console.log(this.url)
 		})
+		this.url = location.hash.slice(1)
+		console.log(this.url)
 	}
 }
 </script>
