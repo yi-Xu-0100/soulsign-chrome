@@ -8,16 +8,29 @@
 2. chrome网上应用店安装(上架中...)
 
 ### 安装脚本
-- [吾爱破解签到](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/52pojie.js)
-- [圆通积分](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/ec.yto.js)
-- [京东PC签到](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/jd.js)
-- [京东金融PC](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/jr.jd.js)
-- [bilibili直播](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/live.bilibili.js)
-- [京东APP签到+翻牌](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/m.jd.js)
-- [MIUI论坛](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/miui.js)
-- [网易云音乐签到](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/music.163.js)
-- [v2ex签到](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/v2ex.js)
-- [什么值得买签到](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/zhiyou.smzdm.js)
+
+选中 `chrome-extension://xxxxxx#https://xxx.js` 右键 -> 转到
+
+- 吾爱破解签到  
+`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/52pojie.js`
+- 圆通积分  
+`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/ec.yto.js`
+- 京东PC签到  
+`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/jd.js`
+- 京东金融`PCchrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/jr.jd.js`
+
+- bilibili直播  
+`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/live.bilibili.js`
+- 京东APP签到+翻牌  
+`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/m.jd.js`
+- MIUI论坛  
+`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/miui.js`
+- 网易云音乐签到  
+`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/music.163.js`
+- v2ex签到  
+`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/v2ex.js`
+- 什么值得买签到  
+`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/zhiyou.smzdm.js`
 
 ### 计划:
 
