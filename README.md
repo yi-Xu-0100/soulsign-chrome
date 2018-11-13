@@ -1,11 +1,11 @@
 ### 功能
 
-自动签到,每天只要打开浏览器就可以自动签到
+自动签到,每天只要打开浏览器就可以自动签到,不用填写账号密码,不用手动抓取cookie,只需要 添加脚本+登录账号
 
 ### 使用方法
 
 1. 手动安装: [点击下载](https://github.com/inu1255/soulsign-chrome/blob/master/build.crx)插件，拖动到扩展程序中
-2. chrome网上应用店安装
+2. chrome网上应用店安装(上架中...)
 
 ### 安装脚本
 - [吾爱破解签到](chrome-extension://fdpjfjdccepadkokondcpebkbekhcflh/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/52pojie.js)
@@ -84,5 +84,5 @@ exports.check = async function() {
 
 ### 思路
 
-作者以前用[puppeteer](https://github.com/GoogleChrome/puppeteer#readme)做过一套签到工具，还做过挂服务器上的签到工具，两者都有一个短板----拿cookie不方便，做成插件的好处就是不用管理cookie,你平时要用浏览器吧。
+作者以前用[puppeteer](https://github.com/GoogleChrome/puppeteer#readme)做过一套签到工具，用nodejs做过签到站点，不过两者都有一个短板--拿cookie不方便。做成插件的好处就是不用管理cookie,插件不用记录cookie信息,用户不用抓取cookie只需要在浏览器登录账号就行了。
 
