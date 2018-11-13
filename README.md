@@ -17,8 +17,8 @@
 `chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/ec.yto.js`
 - 京东PC签到  
 `chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/jd.js`
-- 京东金融`PCchrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/jr.jd.js`
-
+- 京东金融  
+`PCchrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/jr.jd.js`
 - bilibili直播  
 `chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/live.bilibili.js`
 - 京东APP签到+翻牌  

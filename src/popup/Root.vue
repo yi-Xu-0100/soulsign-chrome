@@ -1,5 +1,5 @@
 <template>
-	<div class="popup-root">
+	<div class="root">
 		<div class="tar">
 			<a target="_blank" href="/pages/options.html">任务管理</a>
 		</div>
@@ -43,7 +43,7 @@ export default class Root extends Vue {
 }
 </script>
 <style lang="less">
-.popup-root {
+.root {
   input {
     margin-bottom: 3px;
   }

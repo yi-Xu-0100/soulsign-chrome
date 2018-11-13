@@ -137,7 +137,7 @@ let utils = {
     getTasks() {
         return new Promise((resolve, reject) => {
             chrome.storage.local.get('tasks', ({ tasks }) => {
-                resolve(tasks.map(task => {
+                resolve((tasks || []).map(task => {
                     let request = axios.create({ timeout: 10e3 });
                     request.interceptors.request.use(function(config) {
                         let m = /https?:\/\/([^\/]+)/.exec(config.url);

@@ -14,6 +14,7 @@ async function loop() {
     let tasks = await utils.getTasks();
     let today = dayjs().startOf('day');
     let changed = false;
+    console.log('loop', tasks.length);
     for (let task of tasks) {
         if (!task.enable) continue;
         if (task.check) { // 有检查是否在线的函数

@@ -1,5 +1,5 @@
 <template>
-	<div class="options-root">
+	<div class="root">
 		<mu-appbar title="魂签" color="primary">
 			<mu-button @click="go('https://perpay.inu1255.cn/donate/4?page=1&n=1')" flat slot="right">捐赠</mu-button>
 			<mu-button @click="go('https://github.com/inu1255/soulsign-chrome')" flat slot="right">源码</mu-button>
@@ -279,7 +279,7 @@ export default class Root extends Vue {
 }
 </script>
 <style lang="less">
-.options-root {
+.root {
   a.app {
     color: #000;
     text-decoration: underline;
