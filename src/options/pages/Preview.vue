@@ -38,6 +38,7 @@ export default class Preview extends Vue {
 		}
 	}
 	close() {
+		location.href = '#'
 		this.$emit('update:open', false)
 	}
 	mounted() {
