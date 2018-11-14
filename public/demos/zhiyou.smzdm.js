@@ -4,6 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          https://zhiyou.smzdm.com/user/login
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/zhiyou.smzdm.js
 // @expire            900e3
 // @domain            zhiyou.smzdm.com
 // ==/UserScript==

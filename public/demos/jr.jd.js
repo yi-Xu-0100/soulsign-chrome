@@ -4,6 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          http://vip.jr.jd.com/
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/jr.jd.js
 // @expire            900e3
 // @domain            vip.jr.jd.com
 // ==/UserScript==

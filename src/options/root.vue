@@ -18,6 +18,7 @@
 					<td>
 						<a class="app" v-if="row.namespace" :href="row.namespace" target="_blank">{{row.name}}</a>
 						<span v-else>{{row.name}}</span>
+						<a v-if="row.updateURL" class="nowrap" :href="'#'+row.updateURL">更新/重装</a>
 					</td>
 					<td>{{row.version}}</td>
 					<td>
@@ -208,13 +209,6 @@ export default class Root extends Vue {
 			this.url = false
 			location.href = '#'
 		}
-		if (!task) return this.$toast.error('格式非法,找不到==UserScript==区域')
-		if (!task.author) task.author = ''
-		if (!task.name) return this.$toast.error('缺少@name')
-		if (!task.domain) return this.$toast.error('缺少@domain')
-		else if (!task.domains) task.domains = [task.domain]
-		task.expire = +task.expire || 900e3// 默认15分钟过期
-		task.enable = true
 		let module = { exports: task }
 		try {
 			new Function('exports', 'module', 'axios', task.code)(module.exports, module, utils.axios)
@@ -229,8 +223,12 @@ export default class Root extends Vue {
 		this.$toast.success('添加/修改成功')
 	}
 	onAdd() {
-		let task = utils.compileTask(this.body.code)
-		this.add(task)
+		try {
+			let task = utils.compileTask(this.body.code)
+			this.add(task)
+		} catch (error) {
+			this.$toast.error(error + '')
+		}
 	}
 	toggle(row) {
 		row.enable = !row.enable
@@ -276,7 +274,6 @@ export default class Root extends Vue {
 	mounted() {
 		chrome.storage.onChanged.addListener(({ tasks }) => {
 			if (tasks && this.update_at > 5e3) {
-				console.log('外部更新')
 				this.refresh()
 			}
 		})

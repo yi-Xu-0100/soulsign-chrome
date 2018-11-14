@@ -4,6 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          http://ec.yto.net.cn/login.htm
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/ec.yto.js
 // @expire            900e3
 // @domain            ec.yto.net.cn
 // ==/UserScript==

@@ -4,6 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          https://www.v2ex.com/signin
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/v2ex.js
 // @expire            900e3
 // @domain            www.v2ex.com
 // ==/UserScript==

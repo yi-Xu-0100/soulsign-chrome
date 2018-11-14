@@ -4,6 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          http://www.miui.com/index.html
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/miui.js
 // @expire            900e3
 // @domain            www.miui.com
 // ==/UserScript==

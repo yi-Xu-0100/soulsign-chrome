@@ -4,6 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          https://www.52pojie.cn/
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/52pojie.js
 // @expire            900e3
 // @domain            www.52pojie.cn
 // ==/UserScript==

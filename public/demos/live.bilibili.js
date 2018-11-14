@@ -4,6 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          https://passport.bilibili.com/login
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/live.bilibili.js
 // @expire            900e3
 // @domain            api.live.bilibili.com
 // ==/UserScript==

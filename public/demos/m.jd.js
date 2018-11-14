@@ -4,6 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          http://vip.jd.com/
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/m.jd.js
 // @expire            900e3
 // @domain            api.m.jd.com
 // ==/UserScript==

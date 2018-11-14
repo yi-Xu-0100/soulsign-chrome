@@ -1,5 +1,5 @@
 <template>
-	<mu-dialog title="添加脚本?" :width="360" v-loading="loading" :open="Boolean(open)" @update:open="close" class="pages-preview" scrollable>
+	<mu-dialog title="添加/更新脚本?" :width="360" v-loading="loading" :open="Boolean(open)" @update:open="close" class="pages-preview" scrollable>
 		<ul>
 			<li><span class="key">脚本名：</span>{{task.name}}</li>
 			<li><span class="key">作者：</span>{{task.author}}</li>
@@ -33,6 +33,7 @@ export default class Preview extends Vue {
 			let { data } = await utils.axios.get(this.open)
 			this.task = utils.compileTask(data)
 		} catch (error) {
+			this.$toast.error(error + '')
 			this.close()
 		}
 	}

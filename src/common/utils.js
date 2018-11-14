@@ -140,7 +140,7 @@ let utils = {
                 resolve((tasks || []).map(task => {
                     let request = axios.create({ timeout: 10e3 });
                     request.interceptors.request.use(function(config) {
-                        let m = /https?:\/\/([^\/]+)/.exec(config.url);
+                        let m = /https?:\/\/([^:\/]+)/.exec(config.url);
                         if (!m || task.domains.indexOf(m[1])) return Promise.reject(`domain配置不正确`);
                         if (config.headers) {
                             if (config.headers['Referer']) {
@@ -180,8 +180,9 @@ let utils = {
             let row = tasks[i];
             if (row.name == task.name && row.author == task.author) {
                 task = Object.assign({}, task);
-                for (let k in utils.TASK_EXT) {
-                    task[k] = row[k];
+                for (let k in row) { // 复制原有变量
+                    if (task[k] == null || utils.TASK_EXT[k] != null)
+                        task[k] = row[k];
                 }
                 tasks.splice(i, 1, task);
                 return;
@@ -232,6 +233,13 @@ let utils = {
                 task[name] = value;
             }
         }
+        if (!task) throw ('格式非法,找不到==UserScript==区域');
+        if (!task.author) task.author = '';
+        if (!task.name) throw ('缺少@name');
+        if (!task.domain) throw ('缺少@domain');
+        else if (!task.domains) task.domains = [task.domain];
+        task.expire = +task.expire || 900e3; // 默认15分钟过期
+        task.enable = true;
         return task;
     },
 };

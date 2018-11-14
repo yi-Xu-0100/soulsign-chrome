@@ -4,6 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          https://music.163.com/#/login
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/music.163.js
 // @expire            900e3
 // @domain            music.163.com
 // ==/UserScript==

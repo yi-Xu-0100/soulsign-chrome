@@ -6,7 +6,6 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
     for (let key in changes) {
         var storageChange = changes[key];
         config[key] = storageChange.newValue;
-        console.log('change', key, config[key]);
     }
 });
 
@@ -59,6 +58,37 @@ async function loop() {
     if (changed) await utils.saveTasks(tasks);
 }
 
+async function upgrade() {
+    let now = +new Date();
+    if (config.upgrade_at + (config.upgrade_freq * 1e3) > now) return;
+    console.log('开始检查更新');
+    let tasks = await utils.getTasks();
+    let li = [];
+    for (let task of tasks) {
+        if (!task.enable) continue;
+        if (task.updateURL) {
+            let { data } = await utils.axios.get(task.updateURL);
+            try {
+                let item = utils.compileTask(data);
+                if (item.version != task.version) {
+                    li.push(task.name);
+                    utils.addTask(tasks, item);
+                }
+            } catch (error) {
+                console.error(task.name, '更新失败');
+            }
+        }
+    }
+    if (li.length) {
+        await utils.saveTasks(tasks);
+        let title = li[0];
+        if (li.length > 1) title += `等${li.length}个脚本`;
+        new Notification(title + ' 升级成功').onclick = () => chrome.tabs.create({ url: '/pages/options.html' });
+    }
+    config.upgrade_at = now;
+    await utils.saveConfig();
+}
+
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
     // 只有插件才加
     if (!details.initiator.startsWith('chrome-extension://')) return;
@@ -75,6 +105,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 async function main() {
     while (true) {
         await loop();
+        if (config.upgrade) await upgrade();
         await utils.sleep(config.loop_freq * 1e3);
     }
 }
