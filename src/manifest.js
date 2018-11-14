@@ -1,6 +1,6 @@
 module.exports = {
     name: '魂签',
-    version: '1.0.1',
+    version: '1.0.2',
     description: '自动签到',
     author: 'inu1255',
     manifest_version: 2,
@@ -21,7 +21,7 @@ module.exports = {
         'webRequestBlocking'
     ],
     browser_action: {
-        default_title: '超级VIP',
+        default_title: '魂签',
         default_popup: 'pages/popup.html'
     },
     background: {

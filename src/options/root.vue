@@ -1,6 +1,7 @@
 <template>
 	<div class="root">
 		<mu-appbar title="魂签" color="primary">
+			<mu-button @click="more=true" flat slot="right">脚本推荐</mu-button>
 			<mu-button @click="go('https://perpay.inu1255.cn/donate/4?page=1&n=1')" flat slot="right">捐赠</mu-button>
 			<mu-button @click="go('https://github.com/inu1255/soulsign-chrome')" flat slot="right">源码</mu-button>
 		</mu-appbar>
@@ -81,6 +82,7 @@
 			</mu-container>
 		</div>
 		<Preview :open.sync="url" @submit="add"></Preview>
+		<Lists :open.sync="more"></Lists>
 	</div>
 </template>
 <script>
@@ -88,8 +90,9 @@ import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator';
 import utils from '../common/utils.js'
 import Preview from './pages/Preview.vue'
+import Lists from './pages/Lists.vue'
 
-@Component({ components: { Preview } })
+@Component({ components: { Preview, Lists } })
 export default class Root extends Vue {
 	loading = false
 	log = false // 当前查看log的任务
@@ -98,6 +101,7 @@ export default class Root extends Vue {
 	tasks = []
 	sort = { name: 'name', order: 'asc' }
 	url = false // 导入url
+	more = false // 插件推荐
 	get columns() {
 		return [{
 			title: "作者",
