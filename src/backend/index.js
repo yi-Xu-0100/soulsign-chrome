@@ -14,7 +14,6 @@ async function loop() {
     let tasks = await utils.getTasks();
     let today = dayjs().startOf('day');
     let changed = false;
-    console.log('loop', tasks.length);
     for (let task of tasks) {
         if (!task.enable) continue;
         if (task.check) { // 有检查是否在线的函数
@@ -49,7 +48,7 @@ async function loop() {
                 task.online_at = now;
             }
         }
-        if (dayjs(task.success_at).isBefore(today)) {
+        if (dayjs(task.success_at + (config.begin_at % 86400 * 1e3)).isBefore(today)) {
             // 今天没有执行成功过
             if (task.failure_at + config.retry_freq * 1e3 > new Date().getTime()) // 运行失败后要歇10分钟
                 continue;

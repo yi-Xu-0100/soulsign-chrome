@@ -15,6 +15,10 @@
 			<span>任务循环频率(秒)</span>
 			<input type="number" v-model="config.loop_freq">
 		</label>
+		<label>
+			<span>签到开始时间(秒),默认8点整</span>
+			<input type="number" v-model="config.begin_at">
+		</label>
 		<div class="tar">
 			<button @click="save">保存</button>
 		</div>
