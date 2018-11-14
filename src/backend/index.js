@@ -104,8 +104,12 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 
 async function main() {
     while (true) {
-        await loop();
-        if (config.upgrade) await upgrade();
+        try {
+            await loop();
+            if (config.upgrade) await upgrade();
+        } catch (error) {
+            console.error(error);
+        }
         await utils.sleep(config.loop_freq * 1e3);
     }
 }
