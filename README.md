@@ -9,28 +9,8 @@
 
 ### 安装脚本
 
-选中 `chrome-extension://xxxxxx#https://xxx.js` 右键 -> 转到
-
-- 吾爱破解签到  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/52pojie.js`
-- 圆通积分  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/ec.yto.js`
-- 京东PC签到  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/jd.js`
-- 京东金融PC  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/jr.jd.js`
-- bilibili直播  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/live.bilibili.js`
-- 京东APP签到+翻牌  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/m.jd.js`
-- MIUI论坛  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/miui.js`
-- 网易云音乐签到  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/music.163.js`
-- v2ex签到  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/v2ex.js`
-- 什么值得买签到  
-`chrome-extension://oacijpkidcecjhelnepkfbjkjfjplmjn/pages/options.html#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/zhiyou.smzdm.js`
+1. 最简单的方法，点击插件图标->任务管理->脚本推荐->挑选安装
+2. 第三方或者自用脚本安装方法, 点击插件图标->任务管理->添加脚本->上传脚本文件/粘贴脚本代码/拖拽脚本文件/粘贴脚本链接
 
 ### 计划:
 

@@ -19,6 +19,7 @@
 						<a class="app" v-if="row.namespace" :href="row.namespace" target="_blank">{{row.name}}</a>
 						<span v-else>{{row.name}}</span>
 					</td>
+					<td>{{row.version}}</td>
 					<td>
 						<span v-for="domain in row.domains" :key="domain" :title="domain">
 							<img :src="'https://www.google.com/s2/favicons?domain='+domain" :alt="domain">
@@ -113,9 +114,14 @@ export default class Root extends Vue {
 			name: 'name',
 			sortable: true,
 		}, {
+			title: "版本",
+			name: 'version',
+			width: 64,
+			sortable: true,
+		}, {
 			title: '站点',
 			name: 'domains',
-			width: 96,
+			width: 72,
 			sortable: true,
 		}, {
 			title: '是否在线',
@@ -143,6 +149,7 @@ export default class Root extends Vue {
 			sortable: true,
 		}, {
 			title: '操作',
+			width: 128,
 		}]
 	}
 	get list() {
@@ -160,7 +167,7 @@ export default class Root extends Vue {
 			tasks.sort((a, b) => {
 				return o * ((a.success_at - a.failure_at) - (b.success_at - b.failure_at))
 			})
-		} else if (["author", "name", "result",].indexOf(name) >= 0) {
+		} else if (["author", "name", "version",].indexOf(name) >= 0) {
 			tasks.sort((a, b) => {
 				return o * (a[name] >= b[name] ? 1 : -1)
 			})

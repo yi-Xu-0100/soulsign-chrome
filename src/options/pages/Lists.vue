@@ -1,8 +1,8 @@
 <template>
 	<mu-dialog title="脚本推荐" :width="360" v-loading="loading" :open="Boolean(open)" @update:open="close" class="pages-lists" scrollable>
 		<ul>
-			<li v-for="(item,i) in list" :key="i">
-				<a :href="'#https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos/'+item[1]">{{item[0]}}</a>
+			<li class="tac" v-for="(item,i) in list" :key="i">
+				<a :href="'#https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/'+item[1]">{{item[0]}}</a>
 			</li>
 		</ul>
 		<mu-button slot="actions" flat @click="close">关闭</mu-button>
@@ -23,7 +23,8 @@ export default class Lists extends Vue {
 	@utils.loading()
 	async refresh() {
 		if (!this.open) return
-		this.list = await utils.axios.get(`https://raw.githubusercontent.com/inu1255/soulsign-chrome/master/public/demos.json`)
+		let { data } = await utils.axios.get(`https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos.json`)
+		this.list = data
 	}
 	close() {
 		this.$emit('update:open', false)
@@ -42,6 +43,7 @@ export default class Lists extends Vue {
   }
   li {
     list-style: none;
+    margin: 3px 5px;
   }
 }
 </style>
