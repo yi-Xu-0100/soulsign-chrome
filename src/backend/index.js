@@ -47,7 +47,7 @@ async function loop() {
                 task.online_at = now;
             }
         }
-        if (dayjs(task.success_at + (config.begin_at % 86400 * 1e3)).isBefore(today)) {
+        if (dayjs(task.success_at - (config.begin_at % 86400 * 1e3)).isBefore(today)) {
             // 今天没有执行成功过
             if (task.failure_at + config.retry_freq * 1e3 > new Date().getTime()) // 运行失败后要歇10分钟
                 continue;
