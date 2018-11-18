@@ -8,6 +8,7 @@
 		<br>
 		<mu-container style="margin-bottom: 245px;">
 			<div class="tar">
+				<mu-button @click="clear()" color="primary">清空计数</mu-button>
 				<mu-button @click="edit()" color="primary">添加脚本</mu-button>
 				<!-- <mu-button @click="refresh">刷新</mu-button> -->
 			</div>
@@ -192,6 +193,13 @@ export default class Root extends Vue {
 			this.$toast.error(`${row.name} 执行失败`)
 		else
 			this.$toast.success(`${row.name} 执行成功`)
+	}
+	clear() {
+		for (let task of this.tasks) {
+			task.ok = 0
+			task.cnt = 0
+		}
+		return utils.saveTasks(this.tasks)
 	}
 	edit(row) {
 		let body = Object.assign({ code: '' }, row)

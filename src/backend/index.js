@@ -11,7 +11,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 
 async function loop() {
     let tasks = await utils.getTasks();
-    let today = dayjs().startOf('day');
+    let today = dayjs().add(-config.begin_at, 'second').startOf('day').add(config.begin_at, 'second');
     let changed = false;
     for (let task of tasks) {
         if (!task.enable) continue;
@@ -47,7 +47,7 @@ async function loop() {
                 task.online_at = now;
             }
         }
-        if (dayjs(task.success_at - (config.begin_at % 86400 * 1e3)).isBefore(today)) {
+        if (dayjs(task.success_at).isBefore(today)) {
             // 今天没有执行成功过
             if (task.failure_at + config.retry_freq * 1e3 > new Date().getTime()) // 运行失败后要歇10分钟
                 continue;
@@ -67,8 +67,8 @@ async function upgrade() {
     for (let task of tasks) {
         if (!task.enable) continue;
         if (task.updateURL) {
-            let { data } = await utils.axios.get(task.updateURL);
             try {
+                let { data } = await utils.axios.get(task.updateURL);
                 let item = utils.compileTask(data);
                 if (item.version != task.version) {
                     li.push(task.name);
@@ -91,7 +91,7 @@ async function upgrade() {
 
 chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
     // 只有插件才加
-    if (!details.initiator.startsWith('chrome-extension://')) return;
+    if (!details.initiator || !details.initiator.startsWith('chrome-extension://')) return;
     let requestHeaders = details.requestHeaders;
     for (var i = 0; i < requestHeaders.length; ++i) {
         var header = requestHeaders[i];
