@@ -5,7 +5,7 @@
 ### 使用方法
 
 1. 手动安装: [点击下载](https://github.com/inu1255/soulsign-chrome/blob/master/build.crx)插件，拖动到扩展程序中
-2. chrome网上应用店安装(上架中...)
+2. [chrome网上应用店安装](https://chrome.google.com/webstore/detail/%E9%AD%82%E7%AD%BE/llbielhggjekmfjikgkcaloghnibafdl?hl=zh-CN)
 
 ### 安装脚本
 
