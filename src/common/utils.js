@@ -8,8 +8,10 @@ const ts = [
     [60e3, "分钟"],
     [1e3, "秒"],
 ];
+const isFirefox = /firefox/i.test(navigator.userAgent);
 
 let utils = {
+    isFirefox,
     axios: axios.create({ timeout: 30e3 }),
     syncValues(keys) {
         var data = {};
@@ -167,12 +169,16 @@ let utils = {
     },
     saveTasks(tasks) {
         return new Promise((resolve, reject) => {
+            if (isFirefox) tasks = JSON.parse(JSON.stringify(tasks));
             chrome.storage.local.set({ tasks }, resolve);
         });
     },
     saveConfig() {
         return new Promise((resolve, reject) => {
-            chrome.storage.local.set(config, resolve);
+            let tmp;
+            if (isFirefox) tmp = JSON.parse(JSON.stringify(config));
+            else tmp = config;
+            chrome.storage.local.set(tmp, resolve);
         });
     },
     addTask(tasks, task) {

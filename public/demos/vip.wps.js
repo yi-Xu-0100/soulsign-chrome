@@ -3,7 +3,7 @@
 // @namespace         https://github.com/inu1255/soulsign-chrome
 // @version           1.0.0
 // @author            inu1255
-// @loginURL          https://vip.wps.cn/login
+// @loginURL          https://zt.wps.cn/2018/clock_in
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/vip.wps.js
 // @expire            900e3
 // @domain            zt.wps.cn
@@ -28,6 +28,6 @@ exports.run = async function() {
 };
 
 exports.check = async function() {
-    var { data } = await axios.get('https://zt.wps.cn/2018/clock_in/api/get_data');
-    return data.userinfo.userid;
+    var { data } = await axios.get('https://zt.wps.cn/2018/clock_in/api/sign_up?sid=0&from=&csource=');
+    return data.msg == '已参加挑战' || data.result == 'ok';
 };

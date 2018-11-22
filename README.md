@@ -7,6 +7,8 @@
 1. 手动安装: [点击下载](https://github.com/inu1255/soulsign-chrome/blob/master/build.crx)插件，拖动到扩展程序中
 2. [chrome网上应用店安装](https://chrome.google.com/webstore/detail/%E9%AD%82%E7%AD%BE/llbielhggjekmfjikgkcaloghnibafdl?hl=zh-CN)
 
+**firefox** [安装](https://addons.mozilla.org/zh-CN/firefox/addon/%E9%AD%82%E7%AD%BE/)
+
 ### 安装脚本
 
 1. 最简单的方法，点击插件图标->任务管理->脚本推荐->挑选安装

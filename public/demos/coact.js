@@ -34,7 +34,14 @@ exports.check = async function() {
         RateMax: 99,
         sp: { "t": "Plan", "sp": 0, "dt": now },
     });
-    if (data.no == 401) return; // cookie失效
+    if (data.no == 401) {
+        var { data } = await axios.post("https://ext.gaomuxuexi.com:4430/u_login", {
+            ACCOUNT: '',
+            PWD: ''
+        });
+        this._uid = data.usr.id;
+        return; // cookie失效
+    }
     if (data.no != 200) {
         this._uid = 0;
         return;
