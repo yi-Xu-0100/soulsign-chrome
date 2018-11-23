@@ -10,12 +10,17 @@
 // ==/UserScript==
 
 exports.run = async function() {
-    var { data } = await axios.post('https://vipapi.wps.cn/vip_game/v1/flip/user/score', `score=40&rand=${Math.floor(new Date()/1e3)}&score_type=0`, {
+    await axios.post('https://vipapi.wps.cn/vip_game/v1/flip/user/total_score', 'score=255', {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         }
     });
-    if (data.result == 'ok') return `获得${data.data.add_integral}积分`;
+    var { data } = await axios.post('https://vipapi.wps.cn/vip_game/v1/flip/user/score', `score=255&rand=${Math.floor(new Date()/1e3)}&score_type=0`, {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        }
+    });
+    if (data.result == 'ok') return `获得${data.data.today_game_score}积分`;
     throw data.msg;
 };
 

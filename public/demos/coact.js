@@ -47,9 +47,11 @@ exports.check = async function() {
         return;
     }
     let tasks = [];
+    let iID = 0;
     for (let row of data.inf) {
         for (let key of TIMES) {
             if (row.tOpen < row[key]) {
+                iID = row.iID;
                 tasks.push(`[待完成]${row.iTit}`);
                 break;
             }
@@ -64,6 +66,7 @@ exports.check = async function() {
     for (let row of data.inf) {
         for (let key of TIMES) {
             if (row.tOpen < row[key]) {
+                iID = row.iID;
                 tasks.push(`[@]${row.iTit}`);
                 break;
             }
@@ -78,6 +81,7 @@ exports.check = async function() {
     for (let row of data.inf) {
         for (let key of TIMES) {
             if (row.tOpen < row[key]) {
+                iID = row.iID;
                 tasks.push(`[关注]${row.iTit}`);
                 break;
             }
@@ -88,7 +92,7 @@ exports.check = async function() {
             body: tasks.join(' '),
             icon: 'https://ext.gaomuxuexi.com:4430/favicon.ico'
         }).onclick = function() {
-            chrome.tabs.create({ url: 'https://ext.gaomuxuexi.com:4430' });
+            chrome.tabs.create({ url: tasks.length > 1 ? 'https://ext.gaomuxuexi.com:4430' : `https://ext.gaomuxuexi.com:4430/topic.htm#${iID}` });
         };
     }
     return true;

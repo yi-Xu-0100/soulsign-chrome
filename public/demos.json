@@ -1,4 +1,5 @@
 [
+	["wps游戏积分", "vipapi.wps.js"],
 	["wps打卡领会员", "vip.wps.js"],
     ["吾爱破解签到", "52pojie.js"],
     ["圆通积分", "ec.yto.js"],
@@ -9,5 +10,5 @@
     ["MIUI论坛", "miui.js"],
     ["网易云音乐签到", "music.163.js"],
     ["v2ex签到", "v2ex.js"],
-    ["什么值得买签到", "zhiyou.smzdm.js"]
+	["什么值得买签到", "zhiyou.smzdm.js"]
 ]
