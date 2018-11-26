@@ -1,12 +1,16 @@
 <template>
 	<div class="root">
-		<mu-appbar title="魂签" color="primary">
+		<mu-appbar color="primary">
+			<div @click="go('#')" class="mu-appbar-title">魂签</div>
+			<mu-button @click="go('#cross')" flat slot="right">跨域管理</mu-button>
+			<mu-button @click="go('#')" flat slot="right">脚本管理</mu-button>
 			<mu-button @click="more=true" flat slot="right">脚本推荐</mu-button>
-			<mu-button @click="go('https://perpay.inu1255.cn/donate/4?page=1&n=1')" flat slot="right">捐赠</mu-button>
-			<mu-button @click="go('https://github.com/inu1255/soulsign-chrome')" flat slot="right">源码</mu-button>
+			<mu-button @click="go('https://perpay.inu1255.cn/donate/4?page=1&n=1',1)" flat slot="right">捐赠</mu-button>
+			<mu-button @click="go('https://github.com/inu1255/soulsign-chrome',1)" flat slot="right">源码</mu-button>
 		</mu-appbar>
 		<br>
-		<mu-container style="margin-bottom: 245px;">
+		<Cross v-if="path=='cross'"></Cross>
+		<mu-container v-else style="margin-bottom: 245px;">
 			<div class="tar">
 				<mu-button @click="clear()" color="primary">清空计数</mu-button>
 				<mu-button @click="edit()" color="primary">添加脚本</mu-button>
@@ -92,10 +96,11 @@
 import Vue from 'vue'
 import { Component, Prop, Watch } from 'vue-property-decorator';
 import utils from '../common/utils.js'
+import Cross from './pages/Cross.vue'
 import Preview from './pages/Preview.vue'
 import Lists from './pages/Lists.vue'
 
-@Component({ components: { Preview, Lists } })
+@Component({ components: { Preview, Lists, Cross } })
 export default class Root extends Vue {
 	loading = false
 	log = false // 当前查看log的任务
@@ -105,6 +110,7 @@ export default class Root extends Vue {
 	sort = { name: 'name', order: 'asc' }
 	url = false // 导入url
 	more = false // 插件推荐
+	path = ''
 	get columns() {
 		return [{
 			title: "作者",
@@ -273,11 +279,18 @@ export default class Root extends Vue {
 			}
 		}
 	}
-	go(url) {
-		window.open(url)
+	go(url, flag) {
+		if (flag) window.open(url)
+		else location.href = url
 	}
 	created() {
 		this.refresh()
+	}
+	onHashChange() {
+		let hash = location.hash.slice(1)
+		if (hash == 'cross') this.path = 'cross'
+		else this.path = ''
+		if (/^https?:\/\//.test(hash)) this.url = hash
 	}
 	mounted() {
 		chrome.storage.onChanged.addListener(({ tasks }) => {
@@ -285,12 +298,8 @@ export default class Root extends Vue {
 				this.refresh()
 			}
 		})
-		window.addEventListener('hashchange', e => {
-			this.url = location.hash.slice(1)
-			console.log(this.url)
-		})
-		this.url = location.hash.slice(1)
-		console.log(this.url)
+		window.addEventListener('hashchange', this.onHashChange)
+		this.onHashChange()
 	}
 }
 </script>

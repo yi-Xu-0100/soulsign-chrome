@@ -7,6 +7,9 @@ let config = {
     begin_at: 28800, // 每天几点开始签到,默认8点
     upgrade: true, // 是否自动更新
     upgrade_freq: 86400, // 检查更新间隔时间(秒)
+    cross: true,
+    allow_cross: {},
+    cross_header: '',
 };
 
 chrome.storage.local.get(config, function(data) {
