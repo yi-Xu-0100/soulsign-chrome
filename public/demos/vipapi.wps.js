@@ -10,7 +10,7 @@
 // ==/UserScript==
 
 exports.run = async function() {
-    await axios.post('https://vipapi.wps.cn/vip_game/v1/flip/user/total_score', 'score=255', {
+    await axios.post('https://vipapi.wps.cn/vip_game/v1/flip/user/total_score', 'score=' + (Math.floor(Math.random() * 10) + 100), {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         }

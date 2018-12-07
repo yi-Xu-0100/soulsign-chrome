@@ -10,6 +10,7 @@ let config = {
     cross: true,
     allow_cross: {},
     cross_header: '',
+    lock: 0, // 锁定时间
 };
 
 chrome.storage.local.get(config, function(data) {

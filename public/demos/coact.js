@@ -7,44 +7,32 @@
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/coact.js
 // @expire            300e3
 // @domain            ext.gaomuxuexi.com
+// @param             ACCOUNT 账号
+// @param             PWD 密码
 // ==/UserScript==
 
-exports.run = async function() {
-    return this.check();
+exports.run = async function(param) {
+    if (!await this.check(param)) throw '需要登录';
+    return '成功';
 };
 
-exports.check = async function() {
-    if (!this._uid) { // 获取用户ID
-        this._uid = await new Promise((resolve, reject) => {
-            chrome.tabs.create({ url: 'https://ext.gaomuxuexi.com:4430' }, tab => {
-                chrome.tabs.executeScript(tab.id, { code: 'localStorage.user_inf' }, ret => {
-                    if (ret[0]) {
-                        ret = JSON.parse(ret[0]);
-                        resolve(ret.id);
-                    }
-                    chrome.tabs.remove(tab.id);
-                });
-            });
-        });
+exports.check = async function(param) {
+    if (!param.uid) { // 获取 UID
+        var { data } = await axios.post("https://ext.gaomuxuexi.com:4430/u_login", param);
+        if (data.no != 200) throw data.msg;
+        param.uid = data.usr.id;
     }
     let TIMES = ["iTChg", "iTCreate", "iTRe", "tCall"];
     let now = +new Date();
     var { data } = await axios.post("https://ext.gaomuxuexi.com:4430/inf_qry", {
-        UIDDO: `[${this._uid}]`,
+        UIDDO: `[${param.uid}]`,
         RateMax: 99,
         sp: { "t": "Plan", "sp": 0, "dt": now },
     });
     if (data.no == 401) {
-        var { data } = await axios.post("https://ext.gaomuxuexi.com:4430/u_login", {
-            ACCOUNT: '',
-            PWD: ''
-        });
-        this._uid = data.usr.id;
-        return; // cookie失效
-    }
-    if (data.no != 200) {
-        this._uid = 0;
-        return;
+        var { data } = await axios.post("https://ext.gaomuxuexi.com:4430/u_login", param);
+        if (data.no != 200) throw data.msg;
+        param.uid = data.usr.id;
     }
     let tasks = [];
     let iID = 0;

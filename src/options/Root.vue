@@ -52,6 +52,9 @@
 						<mu-switch :input-value="row.enable" @change="toggle(row)"></mu-switch>
 					</td>
 					<td>
+						<mu-button v-if="row.params" @click="set(row,$index)" title="配置参数" icon small>
+							<mu-icon value="settings"></mu-icon>
+						</mu-button>
 						<mu-button @click="run(row)" title="立即执行" icon small :disabled="running">
 							<mu-icon value="play_arrow"></mu-icon>
 						</mu-button>
@@ -88,6 +91,7 @@
 				</ul>
 			</mu-container>
 		</div>
+		<i-form :open.sync="settingTask._params" :title="settingTask.name" :params="settingTask.params" :submit="setting"></i-form>
 		<Preview :open.sync="url" @submit="add"></Preview>
 		<Lists :open.sync="more"></Lists>
 	</div>
@@ -111,6 +115,11 @@ export default class Root extends Vue {
 	url = false // 导入url
 	more = false // 插件推荐
 	path = ''
+	settingTask = {
+		name: '',
+		_params: false,
+		params: [],
+	}
 	get columns() {
 		return [{
 			title: "作者",
@@ -157,7 +166,7 @@ export default class Root extends Vue {
 			sortable: true,
 		}, {
 			title: '操作',
-			width: 128,
+			width: 168,
 		}]
 	}
 	get list() {
@@ -186,8 +195,25 @@ export default class Root extends Vue {
 		}
 		return tasks
 	}
+	@Watch('settingTask._params')
+	onLock(val) {
+		if (val) this.lockTasks()
+		else this.unlockTasks()
+	}
 	async refresh() {
 		this.tasks = await utils.getTasks()
+	}
+	async setting(body) {
+		let task = this.settingTask.task //this.tasks[this.settingTask.i]
+		Object.assign(task._params, body)
+		await utils.addTask(this.tasks, task)
+		await utils.saveTasks(this.tasks)
+		this.$toast.success(`${this.settingTask.name} 保存成功`)
+		this.settingTask._params = false
+	}
+	set(task, i) {
+		let { name, _params, params } = task
+		this.settingTask = { name, _params, params, task }
 	}
 	@utils.loading('running')
 	async run(row) {
@@ -286,6 +312,14 @@ export default class Root extends Vue {
 	created() {
 		this.refresh()
 	}
+	lockTasks() {
+		this.lock = true
+		this.$root.lock = new Date().getTime() + this.$root.loop_freq * 1e3 * 2
+	}
+	unlockTasks() {
+		this.lock = false
+		this.$root.lock = 0
+	}
 	onHashChange() {
 		let hash = location.hash.slice(1)
 		if (hash == 'cross') this.path = 'cross'
@@ -300,47 +334,50 @@ export default class Root extends Vue {
 		})
 		window.addEventListener('hashchange', this.onHashChange)
 		this.onHashChange()
+		setInterval(() => {
+			if (this.lock) this.lockTasks()
+		}, this.$root.loop_freq * 1e3);
 	}
 }
 </script>
 <style lang="less">
 .root {
-  a.app {
-    color: #000;
-    text-decoration: underline;
-  }
-  td img {
-    height: 20px;
-    margin: 0 1px;
-  }
-  .console {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 240px;
-    background: #eee;
-    border-top: 1px solid #555;
-    ul {
-      padding: 0;
-      margin: 0;
-      height: 216px;
-    }
-    li {
-      list-style: none;
-      .small {
-        color: #aaa;
-      }
-      > .info {
-        color: #00c853;
-      }
-      > .error {
-        color: #f44336;
-      }
-      > .warning {
-        color: #ffeb3b;
-      }
-    }
-  }
+	a.app {
+		color: #000;
+		text-decoration: underline;
+	}
+	td img {
+		height: 20px;
+		margin: 0 1px;
+	}
+	.console {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 240px;
+		background: #eee;
+		border-top: 1px solid #555;
+		ul {
+			padding: 0;
+			margin: 0;
+			height: 216px;
+		}
+		li {
+			list-style: none;
+			.small {
+				color: #aaa;
+			}
+			> .info {
+				color: #00c853;
+			}
+			> .error {
+				color: #f44336;
+			}
+			> .warning {
+				color: #ffeb3b;
+			}
+		}
+	}
 }
 </style>

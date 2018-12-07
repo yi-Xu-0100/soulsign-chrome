@@ -88,6 +88,27 @@ let utils = {
         if (s) return s + suffix;
     },
     /**
+     * 复制一个去掉keys的body对象
+     * @param {Object} body 
+     * @param {string[]|{}} keys 
+     */
+    clearKeys(body, keys) {
+        let data = {};
+        if (keys instanceof Array) { // 清除keys中的字段
+            Object.assign(data, body);
+            for (let key of keys) {
+                delete data[key];
+            }
+        } else { // 清除与keys值相同的字段
+            for (let k in body) {
+                let v = body[k];
+                if (keys[k] != v)
+                    data[k] = v;
+            }
+        }
+        return data;
+    },
+    /**
      * @param {number} t 
      * @param {string} format 
      */
@@ -134,7 +155,8 @@ let utils = {
         result: '',
         enable: true,
         ok: 0,
-        cnt: 0,
+		cnt: 0,
+		_params: {},
     },
     getTasks() {
         return new Promise((resolve, reject) => {
@@ -202,7 +224,7 @@ let utils = {
         task.cnt++;
         console.log(task.name, '开始签到');
         try {
-            task.result = await task.run();
+            task.result = await task.run(task._params);
             task.success_at = now;
             task.ok++;
             console.log(task.name, '签到成功');
@@ -244,6 +266,33 @@ let utils = {
         if (!task.name) throw ('缺少@name');
         if (!task.domain) throw ('缺少@domain');
         else if (!task.domains) task.domains = [task.domain];
+        if (task.param && !task.params) task.params = [task.param];
+        if (task.params) {
+            task._params = {};
+            task.params = task.params.map(x => {
+                let param = {};
+                let ss = x.split(/\s+/);
+                param.placeholder = param.label = param.name = ss[0];
+                param.type = 'text';
+                if (ss.length > 2) {
+                    param.label = ss.slice(2).join(' ');
+                    try {
+                        param.type = 'select';
+                        param.options = `[${ss[1]}]`;
+                    } catch (error) {
+                        param.type = ss[1];
+                    }
+                } else if (ss.length == 2) {
+                    param.label = ss[1];
+                }
+                let ll = param.label.split(',');
+                param.label = ll[0];
+                if (ll.length > 1) param.placeholder = ll.slice(1).join(',');
+                return param;
+            });
+        }
+        delete task.param;
+        delete task.domain;
         task.expire = +task.expire || 900e3; // 默认15分钟过期
         task.enable = true;
         return task;

@@ -22,7 +22,7 @@ async function loop() {
                 let ok = false;
                 try {
                     console.log(task.name, '开始检查是否在线');
-                    ok = await task.check();
+                    ok = await task.check(task._params);
                 } catch (err) {
                     if (/Network Error|timeout/.test(err)) return; // 网络中断载时
                     console.log(task.name, '开始检查是否在线失败', err);
@@ -136,11 +136,13 @@ chrome.webRequest.onHeadersReceived.addListener(function(details) {
 
 async function main() {
     while (true) {
-        try {
-            await loop();
-            if (config.upgrade) await upgrade();
-        } catch (error) {
-            console.error(error);
+        if (config.lock < new Date().getTime()) { // 没有被锁定
+            try {
+                await loop();
+                if (config.upgrade) await upgrade();
+            } catch (error) {
+                console.error(error);
+            }
         }
         await utils.sleep(config.loop_freq * 1e3);
     }

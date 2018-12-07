@@ -3,7 +3,7 @@
 		<ul>
 			<li><span class="key">脚本名：</span>{{task.name}}</li>
 			<li><span class="key">作者：</span>{{task.author}}</li>
-			<li><span class="key">域名：</span>{{task.domain}}</li>
+			<li><span class="key">域名：</span>{{task.domains+''}}</li>
 			<li><span class="key">版本：</span>{{task.version}}</li>
 			<li><span class="key">在线检查频率：</span>{{task.expire||900e3|diff}}</li>
 		</ul>
