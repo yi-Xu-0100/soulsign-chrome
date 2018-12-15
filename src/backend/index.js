@@ -9,6 +9,10 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
     }
 });
 
+function race(pms) {
+    return Promise.race([utils.sleep(config.timeout * 1e3), pms]);
+}
+
 async function loop() {
     let tasks = await utils.getTasks();
     let today = dayjs().add(-config.begin_at, 'second').startOf('day').add(config.begin_at, 'second');
@@ -22,7 +26,7 @@ async function loop() {
                 let ok = false;
                 try {
                     console.log(task.name, '开始检查是否在线');
-                    ok = await task.check(task._params);
+                    ok = await race(task.check(task._params));
                 } catch (err) {
                     if (/Network Error|timeout/.test(err)) return; // 网络中断载时
                     console.log(task.name, '开始检查是否在线失败', err);
@@ -52,7 +56,7 @@ async function loop() {
             if (task.failure_at + config.retry_freq * 1e3 > new Date().getTime()) // 运行失败后要歇10分钟
                 continue;
             changed = true;
-            await utils.runTask(task);
+            await race(utils.runTask(task));
         }
     }
     if (changed) await utils.saveTasks(tasks);
@@ -148,4 +152,6 @@ async function main() {
     }
 }
 
-main();
+main().catch(err => {
+    console.log(`崩溃`, err);
+});

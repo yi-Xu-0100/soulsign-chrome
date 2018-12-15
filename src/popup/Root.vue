@@ -27,6 +27,10 @@
 			<span>自动更新频率(秒),默认1天</span>
 			<input type="number" v-model="config.upgrade_freq">
 		</label><br />
+		<label>
+			<span>任务超时限制(秒),默认60秒</span>
+			<input type="number" v-model="config.timeout">
+		</label><br />
 		<div class="tar">
 			<button @click="save">保存</button>
 		</div>

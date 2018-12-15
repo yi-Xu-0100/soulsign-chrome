@@ -80,7 +80,9 @@ exports.check = async function(param) {
             body: tasks.join(' '),
             icon: 'https://ext.gaomuxuexi.com:4430/favicon.ico'
         }).onclick = function() {
-            chrome.tabs.create({ url: tasks.length > 1 ? 'https://ext.gaomuxuexi.com:4430' : `https://ext.gaomuxuexi.com:4430/topic.htm#${iID}` });
+            this.close();
+            chrome.tabs.create({ url: `https://ext.gaomuxuexi.com:4430/topic.htm#${iID}` });
+            // chrome.tabs.create({ url: tasks.length > 1 ? 'https://ext.gaomuxuexi.com:4430' : `https://ext.gaomuxuexi.com:4430/topic.htm#${iID}` });
         };
     }
     return true;

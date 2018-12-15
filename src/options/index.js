@@ -62,3 +62,9 @@ chrome.storage.onChanged.addListener(changes => {
         vue[key] = changes[key].newValue;
     }
 });
+
+var link = document.createElement('link');
+link.type = 'text/css';
+link.rel = 'stylesheet';
+link.href = 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons';
+document.head.appendChild(link);

@@ -17,7 +17,7 @@
 				<!-- <mu-button @click="refresh">刷新</mu-button> -->
 			</div>
 			<br>
-			<mu-data-table :sort.sync="sort" :columns="columns" :data="list" stripe :hover="false">
+			<mu-data-table :sort.sync="sort" :loading="loading" :columns="columns" :data="list" stripe :hover="false">
 				<template slot-scope="{row,$index}">
 					<td>{{row.author}}</td>
 					<td>
@@ -226,12 +226,17 @@ export default class Root extends Vue {
 		else
 			this.$toast.success(`${row.name} 执行成功`)
 	}
-	clear() {
+	@utils.loading()
+	async clear() {
+		this.lockTasks()
+		await utils.sleep(500)
 		for (let task of this.tasks) {
 			task.ok = 0
 			task.cnt = 0
+			task.success_at = 0
 		}
-		return utils.saveTasks(this.tasks)
+		await utils.saveTasks(this.tasks)
+		this.unlockTasks()
 	}
 	edit(row) {
 		let body = Object.assign({ code: '' }, row)
