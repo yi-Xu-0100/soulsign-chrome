@@ -9,8 +9,8 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
     }
 });
 
-function race(pms) {
-    return Promise.race([utils.sleep(config.timeout * 1e3), pms]);
+function race(pms, ms) {
+    return Promise.race([utils.sleep(ms || (config.timeout * 1e3)), pms]);
 }
 
 async function loop() {

@@ -76,14 +76,18 @@ exports.check = async function(param) {
         }
     }
     if (tasks.length) {
-        new Notification('coact通知', {
+        let n = new Notification('coact通知', {
             body: tasks.join(' '),
             icon: 'https://ext.gaomuxuexi.com:4430/favicon.ico'
-        }).onclick = function() {
+        });
+        n.onclick = function() {
             this.close();
             chrome.tabs.create({ url: `https://ext.gaomuxuexi.com:4430/topic.htm#${iID}` });
             // chrome.tabs.create({ url: tasks.length > 1 ? 'https://ext.gaomuxuexi.com:4430' : `https://ext.gaomuxuexi.com:4430/topic.htm#${iID}` });
         };
+        setTimeout(function() {
+            n.close();
+        }, 300e3);
     }
     return true;
 };
