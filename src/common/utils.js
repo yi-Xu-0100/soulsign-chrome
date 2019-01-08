@@ -165,7 +165,7 @@ let utils = {
                     let request = axios.create({ timeout: 10e3 });
                     request.interceptors.request.use(function(config) {
                         let m = /https?:\/\/([^:\/]+)/.exec(config.url);
-                        if (!m || task.domains.indexOf(m[1])) return Promise.reject(`domain配置不正确`);
+                        if (!m || task.domains.indexOf(m[1]) < 0) return Promise.reject(`domain配置不正确`);
                         if (config.headers) {
                             if (config.headers['Referer']) {
                                 config.headers['_referer'] = config.headers['Referer'];

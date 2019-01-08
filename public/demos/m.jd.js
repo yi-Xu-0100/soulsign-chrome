@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name              京东APP签到+翻牌
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.1
+// @version           1.0.2
 // @author            inu1255
 // @loginURL          http://vip.jd.com/
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/m.jd.js
 // @expire            900e3
 // @domain            api.m.jd.com
+// @domain            passport.jd.com
 // @param             name 账号
 // @param             pwd 密码
 // ==/UserScript==
@@ -19,8 +20,12 @@ exports.run = async function(param) {
 };
 
 exports.check = async function(param) {
-    var { data } = await axios.get('https://api.m.jd.com/client.action?functionId=signBeanStart&body=%7B%7D&client=ld&clientVersion=1.0.0');
-    if (data.code == 0) {
+    var { data } = await axios.get('https://passport.jd.com/loginservice.aspx?method=Login&callback=jsonpLogin', {
+        headers: {
+            'Referer': 'https://www.jd.com/'
+        }
+    });
+    if (/Unick/.test(data)) {
         return true;
     }
     if (!param.pwd || !param.name) return false;
