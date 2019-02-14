@@ -114,7 +114,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
             return { requestHeaders };
         }
     }
-}, { urls: ["<all_urls>"], types: ['xmlhttprequest'] }, ["blocking", "requestHeaders"]);
+}, { urls: ["<all_urls>"], types: ['xmlhttprequest'] }, ["blocking", "requestHeaders", "extraHeaders"]);
 
 chrome.webRequest.onHeadersReceived.addListener(function(details) {
     if (!config.cross) return;
