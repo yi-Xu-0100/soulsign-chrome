@@ -39,7 +39,7 @@ async function loop() {
                             body: '点此去登录或禁用它',
                             icon: `https://www.google.com/s2/favicons?domain=${task.domains[0]}`,
                         }).onclick = function() {
-                            chrome.tabs.create({ url: '/pages/options.html' });
+                            chrome.tabs.create({ url: task.loginURL || '/pages/options.html' });
                         };
                         config.notify_at = now;
                         await utils.saveConfig();
