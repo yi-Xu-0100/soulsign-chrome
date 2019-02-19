@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              Mac天空
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.0
+// @version           1.0.1
 // @author            inu1255
 // @loginURL          https://www.mac69.com/
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/mac69.js
@@ -10,7 +10,9 @@
 // ==/UserScript==
 const opt = {
     headers: {
+        'origin': 'https://www.mac69.com',
         'X-Requested-With': 'XMLHttpRequest',
+        'referer': 'https://www.mac69.com/mac/pm',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     }
 };
