@@ -1,13 +1,4 @@
 [
-    ["Chiphell", "chiphell"],
-    ["HDBits", "hdbits"],
-    ["HDHome", "hdhome"],
-    ["红岭论坛", "hongling"],
-    ["MTeam", "mteam"],
-    ["OurBits", "ourbits"],
-    ["PSNINE", "psnine"],
-    ["PuTao", "putao"],
-    ["TTG", "ttg"],
 	["字幕组", "zimuzhu"],
 	["四川移动签到+大转盘", "wap.sc.10086"],
 	["领扣中国签到", "leetcode-cn.js"],
@@ -23,5 +14,14 @@
     ["MIUI论坛", "miui.js"],
     ["网易云音乐签到", "music.163.js"],
     ["v2ex签到", "v2ex.js"],
-	["什么值得买签到", "zhiyou.smzdm.js"]
+	["什么值得买签到", "zhiyou.smzdm.js"],
+    ["Chiphell", "chiphell"],
+    ["HDBits", "hdbits"],
+    ["HDHome", "hdhome"],
+    ["红岭论坛", "hongling"],
+    ["MTeam", "mteam"],
+    ["OurBits", "ourbits"],
+    ["PSNINE", "psnine"],
+    ["PuTao", "putao"],
+    ["TTG", "ttg"]
 ]
