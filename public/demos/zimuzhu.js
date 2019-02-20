@@ -3,14 +3,14 @@
 // @namespace         https://github.com/inu1255/soulsign-chrome
 // @version           1.0.0
 // @author            inu1255
-// @loginURL          https://www.zimuzu.tv/
+// @loginURL          https://www.zimuzu.io/
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/zimuzu.js
 // @expire            900e3
-// @domain            www.zimuzu.tv
+// @domain            www.zimuzu.io
 // ==/UserScript==
 
 exports.run = async function() {
-    var { data } = await axios.get('http://www.zimuzu.tv/user/login/getCurUserTopInfo', { headers: { 'Referer': 'https://www.smzdm.com/' } });
+    var { data } = await axios.get('http://www.zimuzu.io/user/login/getCurUserTopInfo', { headers: { 'Referer': 'http://www.zimuzu.io/' } });
     if (data.status == 1) {
         if (data.data.new_login)
             return `签到成功,共${data.data.userinfo.point}积分`;
@@ -20,6 +20,6 @@ exports.run = async function() {
 };
 
 exports.check = async function() {
-    var { data } = await axios.get('http://www.zimuzu.tv/user/login/getCurUserTopInfo', { headers: { 'Referer': 'https://www.smzdm.com/' } });
+    var { data } = await axios.get('http://www.zimuzu.io/user/login/getCurUserTopInfo', { headers: { 'Referer': 'http://www.zimuzu.io/' } });
     return data.status == 1;
 };
