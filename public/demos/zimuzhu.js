@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              字幕组签到
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.0
+// @version           1.0.1
 // @author            inu1255
 // @loginURL          https://www.zimuzu.io/
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/zimuzu.js
