@@ -15,13 +15,13 @@
     ["网易云音乐签到", "music.163.js"],
     ["v2ex签到", "v2ex.js"],
 	["什么值得买签到", "zhiyou.smzdm.js"],
-    ["Chiphell", "chiphell"],
-    ["HDBits", "hdbits"],
-    ["HDHome", "hdhome"],
-    ["红岭论坛", "hongling"],
-    ["MTeam", "mteam"],
-    ["OurBits", "ourbits"],
-    ["PSNINE", "psnine"],
-    ["PuTao", "putao"],
-    ["TTG", "ttg"]
+    ["Chiphell", "chiphell.js"],
+    ["HDBits", "hdbits.js"],
+    ["HDHome", "hdhome.js"],
+    ["红岭论坛", "hongling.js"],
+    ["MTeam", "mteam.js"],
+    ["OurBits", "ourbits.js"],
+    ["PSNINE", "psnine.js"],
+    ["PuTao", "putao.js"],
+    ["TTG", "ttg.js"]
 ]
