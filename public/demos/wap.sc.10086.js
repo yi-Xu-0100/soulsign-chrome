@@ -12,8 +12,8 @@
 
 exports.run = async function(param) {
     var { data } = await axios.post('http://wap.sc.10086.cn/scmccCampaign/signCalendar/sign.do', 'SSOCookie='+param.SSOCookie);
-    var { data } = await axios.post('http://wap.sc.10086.cn/scmccCampaign/dazhuanpan/dzpDraw.do', 'SSOCookie='+param.SSOCookie);
-    return data.dzpDraw.info;
+    var { data } = await axios.post('http://wap.sc.10086.cn/scmccCampaign/dzpiteration/dzpDraw.do', 'SSOCookie='+param.SSOCookie);
+    return data.result.info;
 };
 
 exports.check = async function() {
