@@ -9,7 +9,7 @@ const ts = [
     [1e3, "秒"],
 ];
 const isFirefox = /firefox/i.test(navigator.userAgent);
-
+window.axios = axios;
 let utils = {
     isFirefox,
     axios: axios.create({ timeout: 30e3 }),
@@ -173,6 +173,13 @@ let utils = {
                             } else if (config.headers['referer']) {
                                 config.headers['_referer'] = config.headers['referer'];
                                 delete config.headers['referer'];
+                            }
+                            if (config.headers['Origin']) {
+                                config.headers['_origin'] = config.headers['Origin'];
+                                delete config.headers['Origin'];
+                            } else if (config.headers['origin']) {
+                                config.headers['_origin'] = config.headers['origin'];
+                                delete config.headers['origin'];
                             }
                         }
                         return config;

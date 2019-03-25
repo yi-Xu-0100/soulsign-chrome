@@ -113,6 +113,10 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
             requestHeaders.splice(i, 1, { name: 'Referer', value: header.value });
             return { requestHeaders };
         }
+        if (header.name === '_origin') {
+            requestHeaders.splice(i, 1, { name: 'Origin', value: header.value });
+            return { requestHeaders };
+        }
     }
 }, { urls: ["<all_urls>"], types: ['xmlhttprequest'] }, ["blocking", "requestHeaders", "extraHeaders"]);
 
