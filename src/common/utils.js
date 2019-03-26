@@ -1,4 +1,5 @@
 import axios from 'axios';
+import req from './require.js';
 import config from './config';
 const ts = [
     [86400e3 * 365, "年"],
@@ -155,8 +156,8 @@ let utils = {
         result: '',
         enable: true,
         ok: 0,
-		cnt: 0,
-		_params: {},
+        cnt: 0,
+        _params: {},
     },
     getTasks() {
         return new Promise((resolve, reject) => {
@@ -187,13 +188,18 @@ let utils = {
                     task = Object.assign({}, utils.TASK_EXT, task);
                     let module = { exports: task };
                     try {
-                        new Function('exports', 'module', 'axios', task.code)(module.exports, module, request);
+                        new Function('exports', 'module', 'axios', 'require', 'getCookie', task.code)(module.exports, module, request, req, utils.getCookie);
                     } catch (err) {
                         console.error(`脚本${task.author}/${task.name}错误`, err);
                     }
                     return task;
                 }));
             });
+        });
+    },
+    getCookie(url, name) {
+        return new Promise((resolve, reject) => {
+            chrome.cookies.get({ url, name }, x => resolve(x && x.value));
         });
     },
     saveTasks(tasks) {
