@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            天使动漫
 // @namespace       https://github.com/inu1255/soulsign-chrome
-// @version         1.0.0
+// @version         1.0.1
 // @author          inu1255
 // @loginURL        https://www.tsdm.love
 // @updateURL       https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/tsdm.love.js
@@ -12,8 +12,9 @@
 
 exports.run = async function(param) {
     var { data } = await axios.get('https://www.tsdm.love/plugin.php?id=dsu_paulsign:sign&576989e1&infloat=yes&handlekey=dsu_paulsign&inajax=1&ajaxtarget=fwin_content_dsu_paulsign');
+    if (/已经签到/.test(data)) return "已经签到";
     var m = /name="formhash" value="([^"]+)/.exec(data);
-    if(!m) throw "签到失败";
+    if (!m) throw "签到失败";
     var formhash = m[1];
     var ss = (param.say || "开心").split('|');
     var say = encodeURIComponent(ss[Math.floor(Math.random() * ss.length)]);
@@ -25,7 +26,8 @@ exports.run = async function(param) {
 
 exports.check = async function(param) {
     var { data } = await axios.get('https://www.tsdm.love/plugin.php?id=dsu_paulsign:sign&576989e1&infloat=yes&handlekey=dsu_paulsign&inajax=1&ajaxtarget=fwin_content_dsu_paulsign');
+    if (/已经签到/.test(data)) return true;
     var m = /name="formhash" value="([^"]+)/.exec(data);
-    if(!m) return false;
+    if (!m) return false;
     return true;
 };
