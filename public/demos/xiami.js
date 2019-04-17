@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name              虾米音乐
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.0
+// @version           1.0.1
 // @author            inu1255
 // @loginURL          https://www.xiami.com/
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/xiami.js
-// @expire            900e3
+// @expire            28800e3
 // @domain            www.xiami.com
 // ==/UserScript==
 
