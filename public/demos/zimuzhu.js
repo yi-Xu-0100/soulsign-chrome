@@ -4,7 +4,7 @@
 // @version           1.0.2
 // @author            inu1255
 // @loginURL          http://www.zmz2019.com/
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/zimuzu.js
+// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/zimuzhu.js
 // @expire            900e3
 // @domain            www.zmz2019.com
 // ==/UserScript==

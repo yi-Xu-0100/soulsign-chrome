@@ -5,7 +5,7 @@
 			<mu-button @click="go('#cross')" flat slot="right">跨域管理</mu-button>
 			<mu-button @click="go('#')" flat slot="right">脚本管理</mu-button>
 			<mu-button @click="more=true" flat slot="right">脚本推荐</mu-button>
-			<mu-button @click="go('https://perpay.inu1255.cn/donate/4?page=1&n=1',1)" flat slot="right">捐赠</mu-button>
+			<mu-button @click="go('https://gitee.com/inu1255/soulsign-chrome',1)" flat slot="right">捐赠</mu-button>
 			<mu-button @click="go('https://github.com/inu1255/soulsign-chrome',1)" flat slot="right">源码</mu-button>
 		</mu-appbar>
 		<br>
