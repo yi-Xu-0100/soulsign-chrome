@@ -166,7 +166,18 @@ let utils = {
                     let request = axios.create({ timeout: 10e3 });
                     request.interceptors.request.use(function(config) {
                         let m = /https?:\/\/([^:\/]+)/.exec(config.url);
-                        if (!m || task.domains.indexOf(m[1]) < 0) return Promise.reject(`domain配置不正确`);
+                        if (!m) return Promise.reject(`domain配置不正确`);
+                        let ss = m[1].split('.');
+                        if(!task.domains.reduce(function(a,b){
+                            if(a) return true;
+                            let dd = b.split('.');
+                            if(dd.length!=ss.length) return false;
+                            for (let i = 0; i < ss.length; i++) {
+                                if(dd[i]!='*'&&ss[i]!=dd[i]) 
+                                    return false;
+                            }
+                            return true;
+                        },false)) return Promise.reject(`domain配置不正确`);
                         if (config.headers) {
                             if (config.headers['Referer']) {
                                 config.headers['_referer'] = config.headers['Referer'];
