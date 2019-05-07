@@ -11,8 +11,7 @@
 // ==/UserScript==
 
 exports.run = async function(param) {
-    var { data } = await axios.post('http://wap.sc.10086.cn/scmccCampaign/signCalendar/sign.do', 'SSOCookie='+param.SSOCookie);
-    var { data } = await axios.post('http://wap.sc.10086.cn/scmccCampaign/dzpiteration/dzpDraw.do', 'SSOCookie='+param.SSOCookie);
+    var { data } = await axios.post('http://wap.sc.10086.cn/scmccCampaign/mixMarketing/lowdraw.do', 'SSOCookie='+param.SSOCookie);
     return data.result.info;
 };
 

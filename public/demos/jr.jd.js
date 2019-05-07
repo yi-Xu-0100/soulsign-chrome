@@ -3,7 +3,7 @@
 // @namespace         https://github.com/inu1255/soulsign-chrome
 // @version           1.0.0
 // @author            inu1255
-// @loginURL          http://vip.jr.jd.com/
+// @loginURL          http://passport.jd.com/new/login.aspx
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/jr.jd.js
 // @expire            900e3
 // @domain            vip.jr.jd.com
