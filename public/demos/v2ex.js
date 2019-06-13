@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              v2ex签到
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.2
+// @version           1.0.3
 // @author            inu1255
 // @loginURL          https://www.v2ex.com/signin
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/v2ex.js
@@ -30,6 +30,9 @@ exports.run = async function() {
  * return true 代表在线
  */
 exports.check = async function() {
+    var now = +new Date();
+    if(this.expired > now) return this.prev_check;
+    this.expired = now + 60e3;
     var ret = await axios.get('https://www.v2ex.com/t/510849', { maxRedirects: 0 });
-    return !/>现在注册</.test(ret.data);
+    return this.prev_check = !/>现在注册</.test(ret.data);
 };

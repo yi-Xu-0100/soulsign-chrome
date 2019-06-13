@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              圆通积分
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.0
+// @version           1.0.1
 // @author            inu1255
 // @loginURL          http://ec.yto.net.cn/login.htm
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/ec.yto.js
@@ -10,13 +10,20 @@
 // ==/UserScript==
 
 exports.run = async function() {
-    var { data } = await axios.get('http://ec.yto.net.cn/checkIn/checkIn.htm');
-    if (/您今天已经签过到了/.test(data)) return '已经签过了';
-    if (/恭喜成功领取到/.test(data)) return '成功';
+	if(this.check())
+        return '成功';
     throw '失败';
 };
 
 exports.check = async function() {
-    var { data } = await axios.get('http://ec.yto.net.cn/checkIn/checkIn.htm');
-    return /您今天已经签过到了|恭喜成功领取到/.test(data);
+	let { data, status } = await axios.post('http://ec.yto.net.cn/api/usersignin', {}, {
+		maxRedirects: 0,
+		validateStatus: s => true,
+		headers: {
+			'referer': 'http://ec.yto.net.cn/home',
+			source: 'PC',
+			'jwt-token': 'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTg4ODY5OTQsInN1YiI6IntcInByb3ZpZGVyTmFtZVwiOlwiTG9naW5Ub2tlblByb3ZpZGVyXCIsXCJkdXJhdGlvblwiOjMwLFwidXNlcklkXCI6NDU0NjMxMzYsXCJ1c2VybmFtZVwiOlwiMTg3ODIwNzEyMTlcIixcImVuYWJsZWRcIjp0cnVlLFwiY3JlZGVudGlhbHNOb25FeHBpcmVkXCI6ZmFsc2UsXCJhY2NvdW50Tm9uRXhwaXJlZFwiOmZhbHNlLFwiYWNjb3VudE5vbkxvY2tlZFwiOmZhbHNlfSJ9.ymTPlgMtTw4z6YP_jShLtHGhSM_AHe6D02XoTfrzROM',
+		}
+	});
+	return status == 200 || status == 400;
 };
