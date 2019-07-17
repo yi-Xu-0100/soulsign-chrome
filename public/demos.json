@@ -27,5 +27,6 @@
     ["OurBits", "ourbits.js"],
     ["PSNINE", "psnine.js"],
     ["PuTao", "putao.js"],
-    ["TTG", "ttg.js"]
+    ["TTG", "ttg.js"],
+    ["天雪论坛", "tianxue.js"]
 ]
