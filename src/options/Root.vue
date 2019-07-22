@@ -21,7 +21,7 @@
 				<template slot-scope="{row,$index}">
 					<td>{{row.author}}</td>
 					<td>
-						<a class="app" v-if="row.namespace" :href="row.namespace" target="_blank">{{row.name}}</a>
+						<a class="app" v-if="row.namespace" :href="row.loginURL" target="_blank">{{row.name}}</a>
 						<span v-else>{{row.name}}</span>
 						<a v-if="row.updateURL" class="nowrap" :href="'#'+row.updateURL">更新/重装</a>
 					</td>
