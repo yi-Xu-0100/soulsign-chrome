@@ -24,6 +24,7 @@
     "build": "webpack --config ./core/webpack.prod.js -p --progress  --hide-modules --colors"
   },
   "devDependencies": {
+    "@types/chrome": "0.0.91",
     "archiver": "^2.1.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",

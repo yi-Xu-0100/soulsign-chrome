@@ -2,9 +2,9 @@ import utils from './utils';
 
 function request(path, body) {
 	return new Promise(function(resolve, reject) {
-		chrome.extension.sendRequest(null, { path, body }, function(x) {
-			if (x && x.no == 500) return reject(x.msg)
-			resolve(x)
+		chrome.runtime.sendMessage({ path, body }, function(x) {
+			if (x && x.no == 200) return resolve(x.data)
+			reject(x && x.msg)
 		});
 	});
 }

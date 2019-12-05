@@ -3,21 +3,22 @@ import utils from './utils';
 import backapi from './backapi';
 import dayjs from 'dayjs';
 
-chrome.extension.onRequest.addListener(async function(info, sender, cb) {
+chrome.runtime.onMessage.addListener(async function(info, sender, cb) {
 	let api = backapi[info.path]
-	// console.log(info.path, info.body);
 	if (api) try {
-		Promise.resolve(api(info.body)).then(cb, msg => cb({ no: 500, msg }));
+		let data = await api(info.body);
+		return { no: 200, data };
 	} catch (msg) {
-		cb({ no: 500, msg });
+		return { no: 500, msg };
 	}
+	return { no: 404, msg: 'not found' }
 })
+
 const TAIL_KEYWORD = '#soulsign-install';
 chrome.tabs.onUpdated.addListener(function(tabId, tabInfo, tab) {
 	if (tabInfo.url && tabInfo.url.endsWith(TAIL_KEYWORD)) {
-		console.log(tabInfo.status)
 		chrome.tabs.update(tabId, {
-			url: chrome.extension.getURL('/pages/options.html#' + tabInfo.url.slice(0, -TAIL_KEYWORD.length))
+			url: chrome.runtime.getURL('/pages/options.html#' + tabInfo.url.slice(0, -TAIL_KEYWORD.length))
 		})
 	}
 })
@@ -29,7 +30,7 @@ function race(pms, ms) {
 function init() {
 	return new Promise(function(resolve, reject) {
 		chrome.storage.sync.get('config', function(data) {
-			if (!data.config) { // 旧版本或者新安装，尝试升级
+			if (!data || !data.config) { // 旧版本或者新安装，尝试升级
 				chrome.storage.local.get(Object.keys(config), function(data) {
 					if (Object.keys(data).length) { // 旧版本
 						console.log('旧版本升级');
@@ -65,6 +66,7 @@ function init() {
 }
 
 async function loop() {
+	console.log('loop');
 	let tasks = await utils.getTasks();
 	let today = dayjs().add(-config.begin_at, 'second').startOf('day').add(config.begin_at, 'second');
 	let err_cnt = 0;
@@ -188,7 +190,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 			return { requestHeaders };
 		}
 	}
-}, { urls: ["<all_urls>"], types: ['xmlhttprequest'] }, ["blocking", "requestHeaders", "extraHeaders"]);
+}, { urls: ["<all_urls>"], types: ['xmlhttprequest'] }, utils.isFirefox ? ["blocking", "requestHeaders"] : ["blocking", "requestHeaders", "extraHeaders"]);
 
 chrome.webRequest.onHeadersReceived.addListener(function(details) {
 	if (!config.cross) return;

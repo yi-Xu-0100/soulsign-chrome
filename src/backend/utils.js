@@ -1,6 +1,6 @@
 import utils from '../common/utils';
 import scriptbuild from './scriptbuild';
-
+// chrome.storage.sync = chrome.storage.local;
 const TASK_EXT = {
 	online_at: 0,
 	run_at: 0,
@@ -15,7 +15,7 @@ const TASK_EXT = {
 
 function localSave(data) {
 	return new Promise(function(resolve, reject) {
-		// if (utils.isFirefox) data = JSON.parse(JSON.stringify(data));
+		if (utils.isFirefox) data = JSON.parse(JSON.stringify(data));
 		chrome.storage.local.set(data, resolve)
 	});
 }
@@ -31,7 +31,7 @@ function localGet(keys) {
 
 function syncSave(data) {
 	return new Promise(function(resolve, reject) {
-		// if (utils.isFirefox) data = JSON.parse(JSON.stringify(data));
+		if (utils.isFirefox) data = JSON.parse(JSON.stringify(data));
 		chrome.storage.sync.set(data, resolve)
 	});
 }
@@ -53,7 +53,7 @@ function getTasks() {
 	return new Promise(function(resolve, reject) {
 		if (cacheTasks) return resolve(cacheTasks);
 		chrome.storage.sync.get('tasks', ({ tasks: names }) => {
-			if (!names || !names.length) return resolve([]);
+			if (!names || !names.length) return resolve(cacheTasks = []);
 			chrome.storage.local.get(names, function(tmap) {
 				let tasks = []
 				for (let name of names) {

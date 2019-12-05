@@ -1,4 +1,4 @@
-const firefox = false;
+const firefox = true;
 module.exports = {
 	name: '魂签',
 	version: '2.0.0',
