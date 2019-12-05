@@ -3,15 +3,18 @@ import utils from './utils';
 import backapi from './backapi';
 import dayjs from 'dayjs';
 
-chrome.runtime.onMessage.addListener(async function(info, sender, cb) {
-	let api = backapi[info.path]
-	if (api) try {
-		let data = await api(info.body);
-		return { no: 200, data };
-	} catch (msg) {
-		return { no: 500, msg };
-	}
-	return { no: 404, msg: 'not found' }
+chrome.runtime.onMessage.addListener(function(info, sender, cb) {
+	(async () => {
+		let api = backapi[info.path]
+		if (api) try {
+			let data = await api(info.body);
+			return cb({ no: 200, data });
+		} catch (msg) {
+			return cb({ no: 500, msg });
+		}
+		return cb({ no: 404, msg: 'not found' });
+	})();
+	return true;
 })
 
 const TAIL_KEYWORD = '#soulsign-install';
@@ -66,7 +69,6 @@ function init() {
 }
 
 async function loop() {
-	console.log('loop');
 	let tasks = await utils.getTasks();
 	let today = dayjs().add(-config.begin_at, 'second').startOf('day').add(config.begin_at, 'second');
 	let err_cnt = 0;
