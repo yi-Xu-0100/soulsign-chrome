@@ -9,26 +9,36 @@
 	</mu-dialog>
 </template>
 <script>
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator';
-import utils from '../../common/utils';
+import utils from '../../common/client';
 
-@Component()
-export default class Lists extends Vue {
-	@Prop() open
-	loading = false
-	list = []
-	sort = { name: 'name', order: 'asc' }
-	@Watch('open')
-	@utils.loading()
-	async refresh() {
-		if (!this.open) return
-		let { data } = await utils.axios.get(`https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos.json`)
-		this.list = data
-	}
-	close() {
-		this.$emit('update:open', false)
-	}
+export default {
+	props: {
+		open: {},
+	},
+	data() {
+		return {
+			loading: false,
+			list: [],
+			sort: { name: 'name', order: 'asc' },
+		}
+	},
+	watch: {
+		open() {
+			this.refresh()
+		}
+	},
+	methods: {
+		refresh() {
+			if (!this.open) return
+			this.$with(async () => {
+				let { data } = await utils.axios.get(`https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos.json`)
+				this.list = data
+			})
+		},
+		close() {
+			this.$emit('update:open', false)
+		},
+	},
 	mounted() {
 		if (this.open) this.refresh()
 	}
@@ -36,14 +46,14 @@ export default class Lists extends Vue {
 </script>
 <style lang="less">
 .pages-lists {
-  ul {
-    padding: 0;
-    margin: 0;
-    min-height: 40vh;
-  }
-  li {
-    list-style: none;
-    margin: 3px 5px;
-  }
+	ul {
+		padding: 0;
+		margin: 0;
+		min-height: 40vh;
+	}
+	li {
+		list-style: none;
+		margin: 3px 5px;
+	}
 }
 </style>

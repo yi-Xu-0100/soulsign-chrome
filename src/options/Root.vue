@@ -12,9 +12,10 @@
 		<Cross v-if="path=='cross'"></Cross>
 		<mu-container v-else style="margin-bottom: 245px;">
 			<div class="tar">
+				<mu-button @click="upload()" color="primary">导入脚本</mu-button>
+				<mu-button @click="download()" color="primary">导出脚本</mu-button>
 				<mu-button @click="clear()" color="primary">清空计数</mu-button>
 				<mu-button @click="edit()" color="primary">添加脚本</mu-button>
-				<!-- <mu-button @click="refresh">刷新</mu-button> -->
 			</div>
 			<br>
 			<mu-data-table :sort.sync="sort" :loading="loading" :columns="columns" :data="list" stripe :hover="false">
@@ -23,12 +24,15 @@
 					<td>
 						<a class="app" v-if="row.namespace" :href="row.loginURL" target="_blank">{{row.name}}</a>
 						<span v-else>{{row.name}}</span>
-						<a v-if="row.updateURL" class="nowrap" :href="'#'+row.updateURL">更新/重装</a>
+						<a v-if="row.updateURL" class="nowrap" :href="'#'+row.updateURL">{{ver[row.key]?'更新':'重装'}}</a>
 					</td>
-					<td>{{row.version}}</td>
+					<td>
+						<a v-if="ver[row.key]" :href="'#'+row.updateURL">{{row.version}}</a>
+						<span v-else>{{row.version}}</span>
+					</td>
 					<td>
 						<span v-for="domain in row.domains" :key="domain" :title="domain">
-							<img :src="'https://www.google.com/s2/favicons?domain='+domain" :alt="domain">
+							<img :src="'https://www.google.com/s2/favicons?domain='+domain" :alt="domain" @error="$event.target.src='/favicons.png'">
 						</span>
 					</td>
 					<td>
@@ -40,7 +44,7 @@
 						<i-date :value="row.run_at"></i-date>
 					</td>
 					<td>
-						<span v-if="row.cnt" title="查看日志(暂未实现)" class="btn" :class="row.success_at>row.failure_at?'green':'red'">
+						<span title="查看日志(暂未实现)" class="btn" :class="row.success_at>row.failure_at?'green':'red'">
 							{{row.result}}
 						</span>
 					</td>
@@ -97,251 +101,314 @@
 	</div>
 </template>
 <script>
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator';
-import utils from '../common/utils.js'
+import utils from '../common/client'
 import Cross from './pages/Cross.vue'
 import Preview from './pages/Preview.vue'
 import Lists from './pages/Lists.vue'
+import JSZip from 'jszip'
 
-@Component({ components: { Preview, Lists, Cross } })
-export default class Root extends Vue {
-	loading = false
-	log = false // 当前查看log的任务
-	body = false // 添加/编辑脚本
-	running = false
-	tasks = []
-	sort = { name: 'name', order: 'asc' }
-	url = false // 导入url
-	more = false // 插件推荐
-	path = ''
-	settingTask = {
-		name: '',
-		_params: false,
-		params: [],
-	}
-	get columns() {
-		return [{
-			title: "作者",
-			name: 'author',
-			width: 96,
-			sortable: true,
-		}, {
-			title: "脚本名",
-			name: 'name',
-			sortable: true,
-		}, {
-			title: "版本",
-			name: 'version',
-			width: 64,
-			sortable: true,
-		}, {
-			title: '站点',
-			name: 'domains',
-			width: 72,
-			sortable: true,
-		}, {
-			title: '是否在线',
-			name: 'online_at',
-			width: 96,
-			sortable: true,
-		}, {
-			title: '最近执行时间',
-			name: 'run_at',
-			width: 96,
-			sortable: true,
-		}, {
-			title: '执行结果',
-			name: 'result',
-			sortable: true,
-		}, {
-			title: '成功次数',
-			name: 'ok',
-			width: 96,
-			sortable: true,
-		}, {
-			title: "已启用",
-			name: 'enable',
-			width: 62,
-			sortable: true,
-		}, {
-			title: '操作',
-			width: 168,
-		}]
-	}
-	get list() {
-		this.update_at = +new Date()
-		let tasks = this.tasks
-		let name = this.sort.name
-		let o = this.sort.order == 'asc' ? 1 : -1
-		if (name == 'domains') {
-			tasks.sort((a, b) => {
-				var v = a.domains.length - b.domains.length
-				if (v) return o * v
-				return o * (a.domains[0] >= b.domains[0] ? 1 : -1)
-			})
-		} else if (name == 'result') {
-			tasks.sort((a, b) => {
-				return o * ((a.success_at - a.failure_at) - (b.success_at - b.failure_at))
-			})
-		} else if (["author", "name", "version",].indexOf(name) >= 0) {
-			tasks.sort((a, b) => {
-				return o * (a[name] >= b[name] ? 1 : -1)
-			})
-		} else {
-			tasks.sort((a, b) => {
-				return o * (a[name] - b[name])
-			})
+export default {
+	data() {
+		return {
+			loading: false,
+			log: false, // 当前查看log的任务,
+			body: false, // 添加/编辑脚本,
+			running: false,
+			tasks: [],
+			sort: { name: '', order: 'asc' },
+			url: false, // 导入url,
+			more: false, // 插件推荐,
+			path: '',
+			settingTask: {
+				name: '',
+				_params: false,
+				params: [],
+			},
+			config: {},
+			ver: {},
 		}
-		return tasks
-	}
-	@Watch('settingTask._params')
-	onLock(val) {
-		if (val) this.lockTasks()
-		else this.unlockTasks()
-	}
-	async refresh() {
-		this.tasks = await utils.getTasks()
-	}
-	async setting(body) {
-		let task = this.settingTask.task //this.tasks[this.settingTask.i]
-		Object.assign(task._params, body)
-		await utils.addTask(this.tasks, task)
-		await utils.saveTasks(this.tasks)
-		this.$toast.success(`${this.settingTask.name} 保存成功`)
-		this.settingTask._params = false
-	}
-	set(task, i) {
-		let { name, _params, params } = task
-		this.settingTask = { name, _params, params, task }
-	}
-	@utils.loading('running')
-	async run(row) {
-		let prev = row.success_at
-		this.$toast.message(`${row.name} 开始执行`)
-		await utils.runTask(row)
-		await utils.saveTasks(this.tasks)
-		if (row.success_at == prev)
-			this.$toast.error(`${row.name} 执行失败`)
-		else
-			this.$toast.success(`${row.name} 执行成功`)
-	}
-	@utils.loading()
-	async clear() {
-		this.lockTasks()
-		await utils.sleep(500)
-		for (let task of this.tasks) {
-			task.ok = 0
-			task.cnt = 0
-			task.success_at = 0
-		}
-		await utils.saveTasks(this.tasks)
-		this.unlockTasks()
-	}
-	edit(row) {
-		let body = Object.assign({ code: '' }, row)
-		this.body = body
-	}
-	del(row) {
-		let idx = this.tasks.indexOf(row)
-		if (idx >= 0) {
-			this.tasks.splice(idx, 1)
-			utils.saveTasks(this.tasks)
-		}
-	}
-	add(task) {
-		if (this.url) {
-			this.url = false
-			location.href = '#'
-		}
-		let module = { exports: task }
-		try {
-			new Function('exports', 'module', 'axios', task.code)(module.exports, module, utils.axios)
-		} catch (err) {
-			console.error(err);
-			return this.$toast.error('脚本错误')
-		}
-		if (typeof task.run != 'function') return this.$toast.error('缺少函数exports.run')
-		utils.addTask(this.tasks, task)
-		utils.saveTasks(this.tasks)
-		this.body = false
-		this.$toast.success('添加/修改成功')
-	}
-	onAdd() {
-		try {
-			let task = utils.compileTask(this.body.code)
-			this.add(task)
-		} catch (error) {
-			this.$toast.error(error + '')
-		}
-	}
-	toggle(row) {
-		row.enable = !row.enable
-		utils.saveTasks(this.tasks)
-	}
-	async pick() {
-		let file = await utils.pick()
-		this.body.code = await utils.readAsText(file)
-	}
-	async drop(e) {
-		let files = e.dataTransfer.files;
-		if (files.length > 0) {
-			e.preventDefault();
-			this.body.code = await utils.readAsText(files[0])
-			return;
-		}
-	}
-	async paste(e) {
-		let isEmpty = this.body.code.trim().length == 0
-		if (e.clipboardData.items) {
-			var items = e.clipboardData.items;
-			for (var i = 0; i < items.length; ++i) {
-				var item = items[i];
-				if (isEmpty && item.kind == "string" && item.type == "text/plain") {
-					item.getAsString(r => {
-						if (/^https?:\/\//.test(r)) {
-							utils.axios.get(r).then(({ data }) => {
-								document.execCommand('undo')
-								this.body.code = data
-							})
+	},
+	computed: {
+		columns() {
+			return [{
+				title: "作者",
+				name: 'author',
+				width: 96,
+				sortable: true,
+			}, {
+				title: "脚本名",
+				name: 'name',
+				sortable: true,
+			}, {
+				title: "版本",
+				name: 'version',
+				width: 64,
+				sortable: true,
+			}, {
+				title: '站点',
+				name: 'domains',
+				width: 72,
+				sortable: true,
+			}, {
+				title: '是否在线',
+				name: 'online_at',
+				width: 96,
+				sortable: true,
+			}, {
+				title: '最近执行时间',
+				name: 'run_at',
+				width: 96,
+				sortable: true,
+			}, {
+				title: '执行结果',
+				name: 'result',
+				sortable: true,
+			}, {
+				title: '成功次数',
+				name: 'ok',
+				width: 96,
+				sortable: true,
+			}, {
+				title: "已启用",
+				name: 'enable',
+				width: 62,
+				sortable: true,
+			}, {
+				title: '操作',
+				width: 168,
+			}]
+		},
+		list() {
+			this.update_at = Date.now()
+			let tasks = this.tasks
+			let name = this.sort.name
+			let o = this.sort.order == 'asc' ? 1 : -1
+			if (name == 'domains') {
+				tasks.sort((a, b) => {
+					var v = a.domains.length - b.domains.length
+					if (v) return o * v
+					return o * (a.domains[0] >= b.domains[0] ? 1 : -1)
+				})
+			} else if (name == 'result') {
+				tasks.sort((a, b) => {
+					return o * ((a.success_at - a.failure_at) - (b.success_at - b.failure_at))
+				})
+			} else if (["author", "name", "version",].indexOf(name) >= 0) {
+				tasks.sort((a, b) => {
+					return o * (a[name] >= b[name] ? 1 : -1)
+				})
+			} else {
+				tasks.sort((a, b) => {
+					return o * (a[name] - b[name])
+				})
+			}
+			return tasks
+		},
+	},
+	methods: {
+		async refresh() {
+			let tasks = await utils.request('task/list')
+			for (let task of tasks) {
+				task.key = task.author + '/' + task.name
+			}
+			this.tasks = tasks;
+		},
+		async upgrade() {
+			let tasks = this.tasks;
+			let map = {}
+			for (let task of tasks)
+				map[task.key] = '';
+			for (let task of tasks) {
+				if (task.updateURL) {
+					try {
+						let { data } = await utils.axios.get(task.updateURL);
+						let item = utils.compileTask(data);
+						if (item.version != task.version) {
+							map[task.key] = item.version;
 						}
-					});
+					} catch (error) {
+						console.error(task.name, '获取更新失败');
+					}
 				}
 			}
-		}
-	}
-	go(url, flag) {
-		if (flag) window.open(url)
-		else location.href = url
-	}
-	created() {
-		this.refresh()
-	}
-	lockTasks() {
-		this.lock = true
-		this.$root.lock = new Date().getTime() + this.$root.loop_freq * 1e3 * 2
-	}
-	unlockTasks() {
-		this.lock = false
-		this.$root.lock = 0
-	}
-	onHashChange() {
-		let hash = location.hash.slice(1)
-		if (hash == 'cross') this.path = 'cross'
-		else this.path = ''
-		if (/^https?:\/\//.test(hash)) this.url = hash
-	}
-	mounted() {
-		chrome.storage.onChanged.addListener(({ tasks }) => {
-			if (tasks && this.update_at > 5e3) {
-				this.refresh()
+			this.ver = map;
+		},
+		async setting(body) {
+			let task = this.settingTask.task //this.tasks[this.settingTask.i]
+			Object.assign(task._params, body)
+			if (await utils.request('task/set', {
+				author: task.author,
+				name: task.name,
+				_params: task._params,
+			})) {
+				this.$toast.success(`${this.settingTask.name} 保存成功`)
+				this.settingTask._params = false
+			} else {
+				this.$toast.error(`${this.settingTask.name} 保存失败`)
 			}
-		})
+		},
+		set(task, i) {
+			let { name, _params, params } = task
+			this.settingTask = { name, _params, params, task }
+		},
+		run(row) {
+			this.$with('running', async () => {
+				let prev = row.success_at
+				this.$toast.message(`${row.name} 开始执行`)
+				let task = await utils.request('task/run', row.author + '/' + row.name);
+				if (task) Object.assign(row, task);
+				if (row.success_at == prev)
+					this.$toast.error(`${row.name} 执行失败`)
+				else
+					this.$toast.success(`${row.name} 执行成功`)
+			})
+		},
+		async upload() {
+			let file = await utils.pick('.soulsign')
+			this.$with(async () => {
+				try {
+					var zip = new JSZip();
+					await zip.loadAsync(file)
+					var text = await zip.file('config.json').async("string")
+					let config = JSON.parse(text);
+					await utils.request('config/set', config);
+					var text = await zip.file('tasks.json').async("string")
+					let tasks = JSON.parse(text)
+					let add_cnt = 0;
+					let set_cnt = 0;
+					for (let task of tasks) {
+						if (await utils.request('task/add', task))
+							set_cnt++;
+						else
+							add_cnt++;
+					}
+					this.$toast.success(`成功导入${add_cnt}条,更新${set_cnt}条`)
+				} catch (e) {
+					console.error(e)
+					this.$toast.error(`导入出错:${e}`)
+				}
+			})
+		},
+		async download() {
+			let config = await utils.request('config/get')
+			var zip = new JSZip();
+			zip.file('config.json', JSON.stringify(config));
+			zip.file('tasks.json', JSON.stringify(this.tasks));
+			let content = await zip.generateAsync({ type: 'blob' })
+			utils.download(content, utils.format(Date.now(), 'YYYY-MM-DD hh:mm:ss.soulsign'))
+		},
+		async clear() {
+			for (let task of this.tasks) {
+				let { author, name } = task;
+				await utils.request('task/set', {
+					author, name,
+					ok: 0,
+					cnt: 0,
+					success_at: 0,
+				});
+			}
+		},
+		edit(row) {
+			let body = Object.assign({ code: '' }, row)
+			this.body = body
+		},
+		async del(row) {
+			let { result } = await this.$message.confirm('你确定要删除吗?')
+			if (result) utils.request('task/del', row.author + '/' + row.name)
+		},
+		add(task) {
+			this.$with(async () => {
+				if (this.url) {
+					this.url = false
+					location.href = '#'
+				}
+				try {
+					await utils.request('task/add', task)
+					this.$toast.success('添加/修改成功')
+				} catch (e) {
+					console.log(e)
+					this.$toast.error(e + '')
+				}
+				this.body = false
+			})
+		},
+		onAdd() {
+			try {
+				let task = utils.compileTask(this.body.code)
+				this.add(task)
+			} catch (error) {
+				this.$toast.error(error + '')
+			}
+		},
+		async toggle(row) {
+			let { author, name, enable } = row;
+			enable = !enable;
+			await utils.request('task/set', { author, name, enable })
+			row.enable = enable
+		},
+		async pick() {
+			let file = await utils.pick()
+			this.body.code = await utils.readAsText(file)
+		},
+		async drop(e) {
+			let files = e.dataTransfer.files;
+			if (files.length > 0) {
+				e.preventDefault();
+				this.body.code = await utils.readAsText(files[0])
+				return;
+			}
+		},
+		async paste(e) {
+			let isEmpty = this.body.code.trim().length == 0
+			if (e.clipboardData.items) {
+				var items = e.clipboardData.items;
+				for (var i = 0; i < items.length; ++i) {
+					var item = items[i];
+					if (isEmpty && item.kind == "string" && item.type == "text/plain") {
+						item.getAsString(r => {
+							if (/^https?:\/\//.test(r)) {
+								utils.axios.get(r).then(({ data }) => {
+									document.execCommand('undo')
+									this.body.code = data
+								})
+							}
+						});
+					}
+				}
+			}
+		},
+		go(url, flag) {
+			if (flag) window.open(url)
+			else location.href = url
+		},
+		created() {
+			this.refresh()
+		},
+		onHashChange() {
+			let hash = location.hash.slice(1)
+			if (hash == 'cross') this.path = 'cross'
+			else this.path = ''
+			if (/^https?:\/\//.test(hash)) this.url = hash
+		},
+	},
+	components: {
+		Preview,
+		Lists,
+		Cross,
+	},
+	mounted() {
 		window.addEventListener('hashchange', this.onHashChange)
 		this.onHashChange()
-		setInterval(() => {
-			if (this.lock) this.lockTasks()
-		}, this.$root.loop_freq * 1e3);
+		this.refresh().then(() => this.upgrade());
+		let prev
+		chrome.storage.onChanged.addListener((changes, areaName) => {
+			if (areaName == 'local' || areaName == 'sync' && changes.tasks) {
+				if (prev) clearTimeout(prev)
+				prev = setTimeout(() => {
+					this.refresh();
+				}, 300);
+			}
+		})
 	}
 }
 </script>

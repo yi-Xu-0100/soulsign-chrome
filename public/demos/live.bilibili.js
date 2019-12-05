@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              bilibili直播
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.0
+// @version           1.0.1
 // @author            inu1255
 // @loginURL          https://passport.bilibili.com/login
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/live.bilibili.js
@@ -12,8 +12,8 @@
 exports.run = async function() {
     var { data } = await axios.get('https://api.live.bilibili.com/sign/doSign');
     if (data.code == 0) return data.data.text;
-    if (data.code == -500) return data.msg;
-    throw data.msg;
+    if (data.code == 1011040) return data.message;
+    throw data.message;
 };
 
 exports.check = async function() {

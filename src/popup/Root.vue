@@ -38,34 +38,32 @@
 </template>
 <script>
 import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator';
-import utils from '../common/utils';
-import config from '../common/config'
+import utils from '../common/client';
 
-@Component()
-export default class Root extends Vue {
-	config = config
-	save() {
-		utils.saveConfig()
-	}
-	mounted() {
-		chrome.storage.onChanged.addListener(changes => {
-			for (let key in changes) {
-				var storageChange = changes[key];
-				this.config[key] = storageChange.newValue;
-			}
-		});
+export default {
+	data: function () {
+		return {
+			config: {}
+		}
+	},
+	methods: {
+		save() {
+			utils.request('config/set', this.config)
+		}
+	},
+	async mounted() {
+		this.config = await utils.request('config/get')
 	}
 }
 </script>
 <style lang="less">
 .root {
-  min-width: 240px;
-  input {
-    margin-bottom: 3px;
-  }
-  input[type="number"] {
-    width: 56px;
-  }
+	min-width: 240px;
+	input {
+		margin-bottom: 3px;
+	}
+	input[type="number"] {
+		width: 56px;
+	}
 }
 </style>

@@ -5,23 +5,24 @@
 </template>
 <script>
 import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator';
 
-@Component()
-export default class IRate extends Vue {
-	@Prop({ type: Number, required: true }) value
-	@Prop({ type: String, default: '#4caf50' }) color
-	@Prop({ type: String, default: '#9e9e9e' }) bgColor
-	@Prop({ type: String, default: '#fff' }) textColor
-	@Prop({ type: [Number, String] }) width
-
-	get sty() {
-		return {
-			background: `${this.bgColor} linear-gradient(${this.color},${this.color}) no-repeat`,
-			backgroundSize: `${this.value * 100}% 100%`,
-			color: this.textColor,
-			width: this.width
+export default {
+	props: {
+		value: { type: Number, required: true },
+		color: { type: String, default: '#4caf50' },
+		bgColor: { type: String, default: '#9e9e9e' },
+		textColor: { type: String, default: '#fff' },
+		width: { type: [Number, String] },
+	},
+	computed: {
+		sty() {
+			return {
+				background: `${this.bgColor} linear-gradient(${this.color},${this.color}) no-repeat`,
+				backgroundSize: `${this.value * 100}% 100%`,
+				color: this.textColor,
+				width: this.width
+			}
 		}
-	}
+	},
 }
 </script>

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              wps打卡领会员
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.0
+// @version           1.0.1
 // @author            inu1255
 // @loginURL          https://zt.wps.cn/2018/clock_in
 // @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/vip.wps.js
@@ -24,6 +24,7 @@ exports.run = async function() {
     if (data.result != 'ok') throw data.msg;
     var { data } = await axios.get('https://zt.wps.cn/2018/clock_in/api/clock_in');
     if (data.msg == '已打卡') return '已打卡';
+    if (data.msg == '不在打卡时间内') return '不在打卡时间内';
     if (data.result != 'ok') throw data.msg;
 };
 

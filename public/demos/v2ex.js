@@ -30,7 +30,7 @@ exports.run = async function() {
  * return true 代表在线
  */
 exports.check = async function() {
-    var now = +new Date();
+    var now = Date.now();
     if(this.expired > now) return this.prev_check;
     this.expired = now + 60e3;
     var ret = await axios.get('https://www.v2ex.com/t/510849', { maxRedirects: 0 });

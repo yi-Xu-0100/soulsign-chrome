@@ -29,72 +29,79 @@
 	</mu-dialog>
 </template>
 <script>
-import Vue from 'vue'
-import { Component, Prop, Watch } from 'vue-property-decorator';
-import utils from '../common/utils';
+import utils from '../common/client';
 
-@Component()
-export default class IForm extends Vue {
-	@Prop({ type: Array, required: true }) params;
-	@Prop({ required: true }) open;
-	@Prop({ type: Function, required: true }) submit;
-	@Prop({ type: String }) title
-	@Prop({ default: 360 }) width
-	disabled = false
-	body = {}
-	get items() {
-		return this.params.filter(x => x.type)
-	}
-	@Watch('open')
-	onOpen() {
-		if (this.open)
-			this.body = Object.assign({}, this.open)
-	}
-	close() {
-		this.$emit('update:open', false)
-	}
-	@utils.loading('disabled')
-	async onSubmit() {
-		let ok = await this.$refs.form.validate()
-		if (!ok) return
-		let form = utils.clearKeys(this.body, this.open);
-		if (!Object.keys(form).length) return this.$toast.message('什么也没有做 -.-')
-		let data
-		if (this.open.id) {
-			form.id = this.open.id
+export default {
+	props: {
+		params: { type: Array, required: true },
+		open: { required: true },
+		submit: { type: Function, required: true },
+		title: { type: String },
+		width: { default: 360 },
+	},
+	data() {
+		return {
+			disabled: false,
+			body: {},
 		}
-		await this.submit(form)
-		this.close()
-	}
-	async toURL(file, param) {
-		let form = new FormData()
-		form.append('f', file)
-		if (param.type == 'qr') {
-			form.append('qr', 3)
+	},
+	computed: {
+		items() {
+			return this.params.filter(x => x.type)
 		}
-		let { url, data } = await this.$post('file/image', form)
-		this.$set(this.body, param.name, url)
-		if (data && param.qrname) {
-			this.body[param.qrname] = data
+	},
+	watch: {
+		open() {
+			if (this.open)
+				this.body = Object.assign({}, this.open)
 		}
-		return url
-	}
-	upload(param) {
-		utils.pick().then(file => this.toURL(file, param));
-	}
-	paste(param, e) {
-		if (e.clipboardData.items) {
-			var items = e.clipboardData.items;
-			for (var i = 0; i < items.length; ++i) {
-				var item = items[i];
-				if (item.kind == 'file') {
-					var file = item.getAsFile();
-					if (file) {
-						if (item.type.indexOf('image/') >= 0) {
-							this.toURL(file, param);
+	},
+	methods: {
+		close() {
+			this.$emit('update:open', false)
+		},
+		async onSubmit() {
+			let ok = await this.$refs.form.validate()
+			if (!ok) return
+			let form = utils.clearKeys(this.body, this.open);
+			if (!Object.keys(form).length) return this.$toast.message('什么也没有做 -.-')
+			let data
+			if (this.open.id) {
+				form.id = this.open.id
+			}
+			await this.submit(form)
+			this.close()
+		},
+		async toURL(file, param) {
+			let form = new FormData()
+			form.append('f', file)
+			if (param.type == 'qr') {
+				form.append('qr', 3)
+			}
+			let { url, data } = await this.$post('file/image', form)
+			this.$set(this.body, param.name, url)
+			if (data && param.qrname) {
+				this.body[param.qrname] = data
+			}
+			return url
+		},
+		upload(param) {
+			utils.pick().then(file => this.toURL(file, param));
+		},
+		paste(param, e) {
+			if (e.clipboardData.items) {
+				var items = e.clipboardData.items;
+				for (var i = 0; i < items.length; ++i) {
+					var item = items[i];
+					if (item.kind == 'file') {
+						var file = item.getAsFile();
+						if (file) {
+							if (item.type.indexOf('image/') >= 0) {
+								this.toURL(file, param);
+							}
+							e.preventDefault();
+							return;
 						}
-						e.preventDefault();
-						return;
 					}
 				}
 			}

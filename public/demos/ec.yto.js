@@ -22,8 +22,8 @@ exports.check = async function() {
 		headers: {
 			'referer': 'http://ec.yto.net.cn/home',
 			source: 'PC',
-			'jwt-token': 'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1NTg4ODY5OTQsInN1YiI6IntcInByb3ZpZGVyTmFtZVwiOlwiTG9naW5Ub2tlblByb3ZpZGVyXCIsXCJkdXJhdGlvblwiOjMwLFwidXNlcklkXCI6NDU0NjMxMzYsXCJ1c2VybmFtZVwiOlwiMTg3ODIwNzEyMTlcIixcImVuYWJsZWRcIjp0cnVlLFwiY3JlZGVudGlhbHNOb25FeHBpcmVkXCI6ZmFsc2UsXCJhY2NvdW50Tm9uRXhwaXJlZFwiOmZhbHNlLFwiYWNjb3VudE5vbkxvY2tlZFwiOmZhbHNlfSJ9.ymTPlgMtTw4z6YP_jShLtHGhSM_AHe6D02XoTfrzROM',
+			'jwt-token': 'eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Njg5NDkwMzEsInN1YiI6IntcInByb3ZpZGVyTmFtZVwiOlwiTG9naW5Ub2tlblByb3ZpZGVyXCIsXCJkdXJhdGlvblwiOjMwLFwidXNlcklkXCI6NDU0NjMxMzYsXCJ1c2VybmFtZVwiOlwiMTg3ODIwNzEyMTlcIixcImVuYWJsZWRcIjp0cnVlLFwiY3JlZGVudGlhbHNOb25FeHBpcmVkXCI6ZmFsc2UsXCJhY2NvdW50Tm9uRXhwaXJlZFwiOmZhbHNlLFwiYWNjb3VudE5vbkxvY2tlZFwiOmZhbHNlfSJ9.RAcTpMsZZWOrCra7jxDz5-qOCteeMCcaq0fq4vy3lB8',
 		}
 	});
-	return status == 200 || status == 400;
+	return !data.error
 };
