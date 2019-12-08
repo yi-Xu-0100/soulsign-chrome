@@ -12,7 +12,7 @@ let config = {
 	cross: true,
 	allow_cross: {},
 	cross_header: '',
-	lock: 0, // 锁定时间
+	donate: true, // 开启捐赠, 跳转到京东返利链接
 };
 
 export default config;

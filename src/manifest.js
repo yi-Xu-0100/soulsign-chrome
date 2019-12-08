@@ -1,7 +1,6 @@
-const firefox = true;
 module.exports = {
 	name: '魂签',
-	version: '2.0.0',
+	version: '2.0.1',
 	description: '自动签到',
 	author: 'inu1255',
 	manifest_version: 2,
@@ -11,13 +10,13 @@ module.exports = {
 		'*://*/*',
 		'tabs',
 		'cookies',
-		'background',
+		// 'background',
 		'contextMenus',
 		'unlimitedStorage',
 		'storage',
 		'notifications',
 		'identity',
-		'identity.email',
+		// 'identity.email',
 		'webRequest',
 		'webRequestBlocking'
 	],
@@ -27,11 +26,10 @@ module.exports = {
 		default_popup: 'pages/popup.html'
 	},
 	background: {
-		persistent: true,
 		page: 'pages/background.html'
 	},
 	//   devtools_page: 'pages/devtools.html',
-	options_page: 'pages/options.html',
+	// options_page: 'pages/options.html',
 	// content_scripts: [{
 	//     js: ['js/inject.js'],
 	//     run_at: 'document_end',
@@ -41,8 +39,3 @@ module.exports = {
 	content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	// web_accessible_resources: ['panel.html', 'js/content.js']
 };
-if (firefox) { // 如果是firefox
-	module.exports.permissions = module.exports.permissions.filter(x => ['identity.email', 'background'].indexOf(x) < 0);
-	delete module.exports.options_page;
-	delete module.exports.background.persistent;
-}

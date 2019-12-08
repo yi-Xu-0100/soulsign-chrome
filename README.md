@@ -21,6 +21,8 @@
 20190326: 支持引用外部js,支持获取指定网页的cookie  
 [示例/public/demo/xiami.js](https://github.com/inu1255/soulsign-chrome/blob/master/public/demos/xiami.js)
 20190428: 支持域名模糊匹配, *.baidu.com 将匹配 xxoo.baidu.com 或 www.baidu.com 但不能匹配 baidu.com
+20191205: 代码重构，清理了一些逻辑，将任务管理等操作统一到了后端，保证数据一至性；增加导入导出功能；增强脚本安全性，新增@grant用于权限申请
+20191208: 增加了返利捐赠开关, 访问`https://www.jd.com/`时将跳转到作者的返利链接
 
 ### 计划:
 

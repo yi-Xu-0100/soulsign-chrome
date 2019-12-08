@@ -31,6 +31,10 @@
 			<span>任务超时限制(秒),默认60秒</span>
 			<input type="number" v-model="config.timeout">
 		</label><br />
+		<label>
+			<span>开启捐赠,京东购物为作者提供收益</span>
+			<input type="checkbox" v-model="config.donate">
+		</label><br />
 		<div class="tar">
 			<button @click="save">保存</button>
 		</div>

@@ -24,6 +24,11 @@ chrome.tabs.onUpdated.addListener(function(tabId, tabInfo, tab) {
 			url: chrome.runtime.getURL('/pages/options.html#' + tabInfo.url.slice(0, -TAIL_KEYWORD.length))
 		})
 	}
+	if (!config.donate) return;
+	let url = 'https://union-click.jd.com/jdc?e=&p=AyIGZRprFDJWWA1FBCVbV0IUWVALHFRBEwQAQB1AWQkrAkh4ZwcRbC13dhFULH8tXFFiQCBGHRkOIgdTGloXCxcGUxhrFQMTB1cZWxEGEDdlG1olSXwGZRtTFgAbDlMZWhwyEgNTGF8TAhsBXB9aFjIVB1wrGUlAFwVUGVMUCiI3ZRhrJTISB2Uba0pGT1plGVoUBhs%3D';
+	if (tabInfo.url && tabInfo.url.endsWith('//www.jd.com/')) {
+		chrome.tabs.update(tabId, { url });
+	}
 })
 
 function race(pms, ms) {
@@ -219,13 +224,11 @@ chrome.webRequest.onHeadersReceived.addListener(function(details) {
 async function main() {
 	await init();
 	while (true) {
-		if (config.lock < new Date().getTime()) { // 没有被锁定
-			try {
-				await loop();
-				if (config.upgrade) await upgrade();
-			} catch (error) {
-				console.error(error);
-			}
+		try {
+			await loop();
+			if (config.upgrade) await upgrade();
+		} catch (error) {
+			console.error(error);
 		}
 		await utils.sleep(config.loop_freq * 1e3);
 	}
