@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name              京东金融PC
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.1
+// @version           1.0.2
 // @author            inu1255
 // @loginURL          http://passport.jd.com/new/login.aspx
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/jr.jd.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/%E4%BA%AC%E4%B8%9C%E9%87%91%E8%9E%8DPC.js
 // @expire            900e3
 // @domain            vip.jr.jd.com
 // ==/UserScript==

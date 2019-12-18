@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name              wps游戏积分
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.0
+// @version           1.0.1
 // @author            inu1255
 // @loginURL          https://vip.wps.cn/login
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/vipapi.wps.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/wps%E6%B8%B8%E6%88%8F%E7%A7%AF%E5%88%86.js
 // @expire            900e3
 // @domain            vipapi.wps.cn
 // ==/UserScript==

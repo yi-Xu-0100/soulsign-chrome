@@ -4,7 +4,7 @@
 // @version           1.0.0
 // @author            inu1255
 // @loginURL          https://passport.jd.com/new/login.aspx
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/jd.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/%E4%BA%AC%E4%B8%9CPC.js
 // @expire            900e3
 // @domain            vip.jd.com
 // ==/UserScript==

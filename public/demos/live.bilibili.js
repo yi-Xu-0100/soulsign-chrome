@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name              bilibili直播
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.1
+// @version           1.0.2
 // @author            inu1255
 // @loginURL          https://passport.bilibili.com/login
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/live.bilibili.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/bilibili%E7%9B%B4%E6%92%AD.js
 // @expire            900e3
 // @domain            api.live.bilibili.com
 // ==/UserScript==

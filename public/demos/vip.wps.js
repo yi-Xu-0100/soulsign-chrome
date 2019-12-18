@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name              wps打卡领会员
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.1
+// @version           1.0.2
 // @author            inu1255
 // @loginURL          https://zt.wps.cn/2018/clock_in
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/vip.wps.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/wps%E6%89%93%E5%8D%A1%E9%A2%86%E4%BC%9A%E5%91%98.js
 // @expire            900e3
 // @domain            zt.wps.cn
 // ==/UserScript==

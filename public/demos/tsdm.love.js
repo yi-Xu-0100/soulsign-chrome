@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name            天使动漫
 // @namespace       https://github.com/inu1255/soulsign-chrome
-// @version         1.0.2
+// @version         1.0.3
 // @author          inu1255
 // @loginURL        https://www.tsdm.live
-// @updateURL       https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/tsdm.love.js
+// @updateURL       https://soulsign.inu1255.cn/script/inu1255/%E5%A4%A9%E4%BD%BF%E5%8A%A8%E6%BC%AB.js
 // @expire          14400e3
 // @domain          www.tsdm.live
 // @param           say 签到时说些什么,可用|分隔

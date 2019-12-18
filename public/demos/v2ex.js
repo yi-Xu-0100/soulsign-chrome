@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name              v2ex签到
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.3
+// @version           1.0.4
 // @author            inu1255
 // @loginURL          https://www.v2ex.com/signin
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/v2ex.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/v2ex%E7%AD%BE%E5%88%B0.js
 // @expire            900e3
 // @domain            www.v2ex.com
 // ==/UserScript==

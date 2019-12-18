@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name              MIUI论坛
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.0
+// @version           1.0.1
 // @author            inu1255
 // @loginURL          http://www.miui.com/index.html
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/miui.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/MIUI%E8%AE%BA%E5%9D%9B.js
 // @expire            900e3
 // @domain            www.miui.com
 // ==/UserScript==

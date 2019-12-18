@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name              coact通知
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.1
+// @version           1.0.2
 // @author            inu1255
 // @loginURL          https://ext.gaomuxuexi.com:4430/
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/coact.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/coact%E9%80%9A%E7%9F%A5.js
 // @expire            300e3
 // @domain            ext.gaomuxuexi.com
 // @grant             notify

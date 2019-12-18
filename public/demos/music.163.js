@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name              网易云音乐
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.0
+// @version           1.0.1
 // @author            inu1255
 // @loginURL          https://music.163.com/#/login
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/music.163.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90.js
 // @expire            900e3
 // @domain            music.163.com
 // ==/UserScript==

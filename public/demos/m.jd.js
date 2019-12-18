@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name              京东APP签到+翻牌
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.2
+// @version           1.0.3
 // @author            inu1255
 // @loginURL          https://passport.jd.com/new/login.aspx
-// @updateURL         https://gitee.com/inu1255/soulsign-chrome/raw/master/public/demos/m.jd.js
+// @updateURL         https://soulsign.inu1255.cn/script/inu1255/%E4%BA%AC%E4%B8%9CAPP%E7%AD%BE%E5%88%B0%20%E7%BF%BB%E7%89%8C.js
 // @expire            900e3
 // @domain            api.m.jd.com
 // @domain            passport.jd.com
