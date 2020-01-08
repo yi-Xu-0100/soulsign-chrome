@@ -185,7 +185,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 		}
 	}
 	// 只有插件才加
-	if (!details.initiator || !details.initiator.startsWith('chrome-extension://')) return;
+	var initiaor = details.initiator || details.documentUrl
+	if (!initiaor || !/^\w+-extension:/.test(initiaor)) return;
 	for (var i = 0; i < requestHeaders.length; ++i) {
 		var header = requestHeaders[i];
 		if (header.name === '_referer') {

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              wps游戏积分
 // @namespace         https://github.com/inu1255/soulsign-chrome
-// @version           1.0.1
+// @version           1.0.2
 // @author            inu1255
 // @loginURL          https://vip.wps.cn/login
 // @updateURL         https://soulsign.inu1255.cn/script/inu1255/wps%E6%B8%B8%E6%88%8F%E7%A7%AF%E5%88%86.js
@@ -20,7 +20,7 @@ exports.run = async function() {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         }
     });
-    if (data.result == 'ok') return `获得${data.data.today_game_score}积分`;
+    if (data.result == 'ok') return `成功`;
     throw data.msg;
 };
 
