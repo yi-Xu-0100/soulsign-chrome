@@ -1,6 +1,6 @@
 module.exports = {
 	name: '魂签',
-	version: '2.0.1',
+	version: '2.0.2',
 	description: '自动签到',
 	author: 'inu1255',
 	manifest_version: 2,
@@ -11,11 +11,11 @@ module.exports = {
 		'tabs',
 		'cookies',
 		// 'background',
-		'contextMenus',
-		'unlimitedStorage',
+		// 'contextMenus',
+		// 'unlimitedStorage',
 		'storage',
 		'notifications',
-		'identity',
+		// 'identity',
 		// 'identity.email',
 		'webRequest',
 		'webRequestBlocking'
