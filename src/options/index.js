@@ -41,5 +41,5 @@ let vue = new Vue({
 var link = document.createElement('link');
 link.type = 'text/css';
 link.rel = 'stylesheet';
-link.href = 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons';
+link.href = 'https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.css';
 document.head.appendChild(link);

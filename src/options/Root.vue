@@ -5,7 +5,7 @@
 			<mu-button @click="go('#cross')" flat slot="right">跨域管理</mu-button>
 			<mu-button @click="go('#')" flat slot="right">脚本管理</mu-button>
 			<mu-button @click="go('https://soulsign.inu1255.cn/',1)" flat slot="right">脚本推荐</mu-button>
-			<mu-button @click="go('https://gitee.com/inu1255/soulsign-chrome',1)" flat slot="right">捐赠</mu-button>
+			<mu-button @click="go('https://donate.inu1255.cn/inu1255/soulsign-chrome',1)" flat slot="right">捐赠</mu-button>
 			<mu-button @click="go('https://github.com/inu1255/soulsign-chrome',1)" flat slot="right">源码</mu-button>
 		</mu-appbar>
 		<br>
@@ -32,7 +32,7 @@
 					</td>
 					<td>
 						<span v-for="domain in row.domains" :key="domain" :title="domain">
-							<img :src="'https://www.google.com/s2/favicons?domain='+domain" :alt="domain" @error="$event.target.src='/favicons.png'">
+							<img :src="'https://favicon.yandex.net/favicon/'+domain3(domain)" :alt="domain">
 						</span>
 					</td>
 					<td>
@@ -210,6 +210,9 @@ export default {
 				task.key = task.author + '/' + task.name
 			}
 			this.tasks = tasks;
+		},
+		domain3(domain) {
+			return domain.split('.').slice(-3).join('.')
 		},
 		async upgrade() {
 			let tasks = this.tasks;

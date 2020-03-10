@@ -25,7 +25,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, tabInfo, tab) {
 		})
 	}
 	if (!config.donate) return;
-	let url = 'https://union-click.jd.com/jdc?e=&p=AyIGZRprFDJWWA1FBCVbV0IUWVALHFRBEwQAQB1AWQkrAkh4ZwcRbC13dhFULH8tXFFiQCBGHRkOIgdTGloXCxcGUxhrFQMTB1cZWxEGEDdlG1olSXwGZRtTFgAbDlMZWhwyEgNTGF8TAhsBXB9aFjIVB1wrGUlAFwVUGVMUCiI3ZRhrJTISB2Uba0pGT1plGVoUBhs%3D';
+	let url = 'https://union-click.jd.com/jdc?e=&p=AyIGZRprFDJWWA1FBCVbV0IUWVALHFRBEwQAQB1AWQkrGn0HSFEFTit2UVZMFnwsQQsQWgtlOxkOIgdTGloXCxcGUxhrFQMTB1cZWxEGEDdlG1olSXwGZRhaFQEbDlIbWxEyEgNcGF0SChcOVhNcFTIVB1wrGUlAFwVUGVMUCiI3ZRhrJTISB2Uba0pGT1plGVoUBhs%3D'
 	if (tabInfo.url && tabInfo.url.endsWith('//www.jd.com/')) {
 		chrome.tabs.update(tabId, { url });
 	}
