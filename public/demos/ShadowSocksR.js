@@ -14,6 +14,7 @@
  * 签到接口，可以使用axios库发起请求,请求url域名必须通过@domain声明
  * throw 签到失败并抛出失败原因
  * return 签到成功并返回成功信息
+ * 把你的机场网址替换成你买的机场就行了，适配许多机场，如果签到过了还是报错失败未登录，估计是下面“您似乎已经签到过了”的消息需要换成你用的机场的消息
  */
 exports.run = async function(param) {	
 	axios.post('https://你的机场网址/auth/login',{email:param.name,passwd: param.pwd});
