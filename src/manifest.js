@@ -1,13 +1,12 @@
 module.exports = {
 	name: '魂签',
-	version: '2.0.4',
+	version: '2.0.5',
 	description: '自动签到',
 	author: 'inu1255',
 	manifest_version: 2,
 	icons: { '16': 'icons/16.png', '48': 'icons/48.png', '96': 'icons/96.png', '128': 'icons/128.png' },
 	permissions: [
 		'<all_urls>',
-		'*://*/*',
 		'tabs',
 		'cookies',
 		// 'background',

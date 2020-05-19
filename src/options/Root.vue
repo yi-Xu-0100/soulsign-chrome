@@ -72,13 +72,19 @@
 				</template>
 			</mu-data-table>
 		</mu-container>
-		<mu-dialog :width="480" :open="Boolean(body)" @update:open="body=false">
-			<div class="tar">
+		<mu-dialog :width="480" :open="Boolean(body)" :fullscreen="fullscreen" @update:open="body=false">
+			<mu-flex justify-content="left" align-items="center" wrap="wrap" class="icon-flex-wrap">
 				<mu-button @click="pick" color="primary">上传文件</mu-button>
-			</div>
-			<mu-text-field style="margin:16px 0 0 0;" v-model="body.code" full-width multi-line :rows="10" :rows-max="10" placeholder="在这里粘贴代码 或 拖拽脚本文件到这里 或 粘贴脚本URL" @dragover.prevent="()=>0" @drop="drop" @paste="paste"></mu-text-field>
+				<div style="flex:1"></div>
+				<mu-button style="margin-top:4px;" color="blue" icon @click="fullscreen=!fullscreen">
+					<mu-icon :value="fullscreen?'fullscreen_exit':'fullscreen'"></mu-icon>
+				</mu-button>
+			</mu-flex>
+			<mu-text-field style="margin:16px 0 0 0;" v-model="body.code" full-width multi-line :rows="windowRows" placeholder="在这里粘贴代码 或 拖拽脚本文件到这里 或 粘贴脚本URL" @dragover.prevent="()=>0" @drop="drop" @paste="paste"></mu-text-field>
+			<mu-button slot="actions" flat color="success" @click="testTask('check', body.code)">调试check</mu-button>
+			<mu-button slot="actions" flat color="success" @click="testTask('run', body.code)">调试run</mu-button>
 			<mu-button slot="actions" flat @click="body=false">取消</mu-button>
-			<mu-button slot="actions" flat color="primary" @click="onAdd">确定</mu-button>
+			<mu-button slot="actions" flat color="primary" @click="onAdd">保存</mu-button>
 		</mu-dialog>
 		<div v-show="log" class="console">
 			<mu-container>
@@ -124,6 +130,12 @@ export default {
 			},
 			config: {},
 			ver: {},
+			fullscreen: localStorage.getItem('fullscreen') || false, // 代码编辑全屏
+		}
+	},
+	watch: {
+		fullscreen() {
+			localStorage.setItem('fullscreen', this.fullscreen)
 		}
 	},
 	computed: {
@@ -201,6 +213,9 @@ export default {
 				})
 			}
 			return tasks
+		},
+		windowRows() {
+			return Math.floor((window.innerHeight - 180) / 24)
 		},
 	},
 	methods: {
@@ -390,6 +405,17 @@ export default {
 			if (hash == 'cross') this.path = 'cross'
 			else this.path = ''
 			if (/^https?:\/\//.test(hash)) this.url = hash
+		},
+		async testTask(key, text) {
+			try {
+				let task = utils.buildScript(text)
+				let ok = await task[key]();
+				this.$toast.success(`返回结果: ${ok}`)
+				console.log(ok)
+			} catch (e) {
+				this.$toast.error(`运行出错，请查看develop console`)
+				console.log(e)
+			}
 		},
 	},
 	components: {

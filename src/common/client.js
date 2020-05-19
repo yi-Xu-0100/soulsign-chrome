@@ -1,4 +1,5 @@
 import utils from './utils';
+import scriptbuild from '../backend/scriptbuild';
 
 function request(path, body) {
 	return new Promise(function(resolve, reject) {
@@ -91,10 +92,16 @@ function download(txt, name) {
 	return download(new Blob([txt]), name);
 };
 
+function buildScript(text) {
+	let task = utils.compileTask(text);
+	return scriptbuild(task)
+}
+
 export default Object.assign({}, utils, {
 	request,
 	pick,
 	readAsText,
 	loading,
 	download,
+	buildScript,
 });
