@@ -17,6 +17,6 @@ exports.run = async function() {
 };
 
 exports.check = async function() {
-    var { data } = await axios.get('https://api.live.bilibili.com/User/userOnlineHeart');
+    var { data } = await axios.get('https://api.live.bilibili.com/relation/v1/Feed/heartBeat');
     return data.code === 0;
 };
