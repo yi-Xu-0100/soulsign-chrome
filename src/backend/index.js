@@ -187,17 +187,24 @@ chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 	// 只有插件才加
 	var initiaor = details.initiator || details.documentUrl
 	if (!initiaor || !/^\w+-extension:/.test(initiaor)) return;
+	var edit = false;
 	for (var i = 0; i < requestHeaders.length; ++i) {
 		var header = requestHeaders[i];
-		if (header.name === '_referer') {
-			requestHeaders.splice(i, 1, { name: 'Referer', value: header.value });
-			return { requestHeaders };
-		}
-		if (header.name === '_origin') {
-			requestHeaders.splice(i, 1, { name: 'Origin', value: header.value });
-			return { requestHeaders };
+		if (header.name === "_referer") {
+			edit = true;
+			for (let j = 0; j < requestHeaders.length; j++) {
+				if (/^(Referer|_referer)$/.test(requestHeaders[j].name)) requestHeaders.splice(j--, 1);
+			}
+			requestHeaders.unshift({name: "Referer", value: header.value});
+		} else if (header.name === "_origin") {
+			edit = true;
+			for (let j = 0; j < requestHeaders.length; j++) {
+				if (/^(Origin|_origin)$/.test(requestHeaders[j].name)) requestHeaders.splice(j--, 1);
+			}
+			requestHeaders.unshift({name: "Origin", value: header.value});
 		}
 	}
+	if (edit) return {requestHeaders};
 }, { urls: ["<all_urls>"], types: ['xmlhttprequest'] }, utils.isFirefox ? ["blocking", "requestHeaders"] : ["blocking", "requestHeaders", "extraHeaders"]);
 
 chrome.webRequest.onHeadersReceived.addListener(function(details) {
