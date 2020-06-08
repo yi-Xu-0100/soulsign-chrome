@@ -311,7 +311,7 @@ export default {
 			zip.file('config.json', JSON.stringify(config));
 			zip.file('tasks.json', JSON.stringify(this.tasks));
 			let content = await zip.generateAsync({ type: 'blob' })
-			utils.download(content, utils.format(Date.now(), 'YYYY-MM-DD hh:mm:ss.soulsign'))
+			utils.download(content, utils.format(Date.now(), 'YYYY-MM-DD_hh-mm-ss.soulsign'))
 		},
 		async clear() {
 			for (let task of this.tasks) {
