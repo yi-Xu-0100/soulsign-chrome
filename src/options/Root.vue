@@ -32,7 +32,7 @@
 					</td>
 					<td>
 						<span v-for="domain in row.domains" :key="domain" :title="domain">
-							<img :src="'https://favicon.yandex.net/favicon/'+domain3(domain)" :alt="domain">
+							<img :src="'http://api.byi.pw/favicon?url='+domain3(domain)" :alt="domain">
 						</span>
 					</td>
 					<td>
@@ -322,7 +322,7 @@ export default {
 			zip.file('config.json', JSON.stringify(config));
 			zip.file('tasks.json', JSON.stringify(this.tasks));
 			let content = await zip.generateAsync({ type: 'blob' })
-			utils.download(content, utils.format(Date.now(), 'YYYY-MM-DD hh:mm:ss.soulsign'))
+			utils.download(content, utils.format(Date.now(), 'YYYY-MM-DD_hh-mm-ss.soulsign'))
 		},
 		async clear() {
 			for (let task of this.tasks) {
@@ -335,7 +335,7 @@ export default {
 				});
 			}
 		},
-		edit(row) {
+		edit(row={_params:{}}) {
 			let body = Object.assign({ code: '' }, row)
 			this.debugTaskParam = Object.assign({}, row._params)
 			this.body = body
@@ -420,7 +420,7 @@ export default {
 		},
 		setDebugParam(text) {
 			try {
-				let task = client.buildScript(text)
+				let task = utils.buildScript(text)
 				let { name, _params, params } = task
 				try {
 					_params = this.debugTaskParam || {}
@@ -439,7 +439,7 @@ export default {
 				try {
 					_params = this.debugTaskParam || {}
 				} catch (error) {}
-				let task = client.buildScript(text)
+				let task = utils.buildScript(text)
 				let ok = await task[key](_params);
 				this.$toast.success(`返回结果: ${ok}`)
 				console.log(ok)
