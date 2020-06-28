@@ -71,6 +71,18 @@ export default function(task) {
 				chrome.cookies.get({ url, name }, x => resolve(x && x.value));
 			});
 		},
+		/**
+		 * 设置指定url指定名字的cookie
+		 * @param {string} url 
+		 * @param {string} name 
+		 * @param {string} value 
+		 */
+		setCookie(url, name, value) {
+			if (!grant.has('cookie')) return Promise.reject('需要@grant cookie');
+			return new Promise((resolve, reject) => {
+				chrome.cookies.set({ url, name, value }, x => resolve(x && x.value));
+			});
+		},
 		$(html) {
 			var div = document.createElement('div')
 			div.innerHTML = html;
