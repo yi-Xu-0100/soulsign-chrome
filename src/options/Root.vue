@@ -335,9 +335,9 @@ export default {
 				});
 			}
 		},
-		edit(row={_params:{}}) {
-			let body = Object.assign({ code: '' }, row)
-			this.debugTaskParam = Object.assign({}, row._params)
+		edit(row) {
+			let body = Object.assign({ code: '', _params: {} }, row)
+			this.debugTaskParam = Object.assign({}, body._params)
 			this.body = body
 		},
 		async del(row) {
