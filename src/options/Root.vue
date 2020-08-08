@@ -272,7 +272,7 @@ export default {
 			}
 		},
 		debugSetting(body) {
-			this.debugTaskParam = Object.assign({},body)
+			Object.assign(this.debugTaskParam, body)
 		},
 		set(task, i) {
 			let { name, _params, params } = task
