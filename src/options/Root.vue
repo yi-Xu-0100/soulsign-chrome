@@ -32,7 +32,7 @@
 					</td>
 					<td>
 						<span v-for="domain in row.domains" :key="domain" :title="domain">
-							<img :src="'https://favicon.link/'+domain3(domain)" :alt="domain">
+							<img :src="'chrome://favicon/https://'+domain3(domain)" :alt="domain">
 						</span>
 					</td>
 					<td>

@@ -92,7 +92,7 @@ export default function(task) {
 			if (!grant.has('notify')) throw '需要@grant notify';
 			let n = new Notification(task.name, {
 				body,
-				icon: 'https://favicon.link/' + task.domains[0]
+				icon: 'chrome://favicon/https://' + task.domains[0]
 			});
 			n.onclick = function() {
 				this.close();
