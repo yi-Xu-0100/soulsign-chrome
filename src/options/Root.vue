@@ -18,7 +18,7 @@
 				<mu-button @click="edit()" color="primary">添加脚本</mu-button>
 			</div>
 			<br>
-			<mu-data-table :sort.sync="sort" :loading="loading" :columns="columns" :data="list" stripe :hover="false">
+			<mu-data-table :sort.sync="sort" :loading="loading" :columns="columns" :data="list" stripe :hover="false" @row-mouseenter="rowMouseEnter">
 				<template slot-scope="{row,$index}">
 					<td>{{row.author}}</td>
 					<td>
@@ -44,9 +44,9 @@
 						<i-date :value="row.run_at"></i-date>
 					</td>
 					<td>
-						<span title="查看日志(暂未实现)" class="btn" :class="row.success_at>row.failure_at?'green':'red'">
-							{{row.result}}
-						</span>
+						<mu-button flat @click="go('#'+'details;'+row.updateURL)" title="查看日志" class="btn" :class="row.success_at>row.failure_at?'green':'red'">
+							{{row.result.summary}}
+						</mu-button>
 					</td>
 					<td>
 						<i-rate v-if="row.cnt" class="tac" width="72px" :value="row.ok/row.cnt||0">{{row.ok}}/{{row.cnt}}</i-rate>
@@ -105,12 +105,14 @@
 		<i-form :open.sync="debugTask._params" title="调试参数" :params="debugTask.params" :submit="debugSetting"></i-form>
 		<i-form :open.sync="settingTask._params" :title="settingTask.name" :params="settingTask.params" :submit="setting"></i-form>
 		<Preview :open.sync="url" @submit="add"></Preview>
+		<Details :open.sync="detail" :task="tasks[mouse]" @submit="details"></Details>
 	</div>
 </template>
 <script>
 import utils from '../common/client'
 import Cross from './pages/Cross.vue'
 import Preview from './pages/Preview.vue'
+import Details from './pages/Details.vue'
 import JSZip from 'jszip'
 
 export default {
@@ -123,6 +125,8 @@ export default {
 			tasks: [],
 			sort: { name: '', order: 'asc' },
 			url: false, // 导入url,
+			detail: false, // 查看细节日志
+			mouse: 0, // 鼠标所在行
 			more: false, // 插件推荐,
 			path: '',
 			settingTask: {
@@ -360,6 +364,15 @@ export default {
 				this.body = false
 			})
 		},
+		details(task) {
+			this.$with(async () => {
+				if (this.detail) {
+					this.detail = false
+					this.$toast.success('查看细节日志')
+				}
+				this.body = false
+			})
+		},
 		onAdd() {
 			try {
 				let task = utils.compileTask(this.body.code)
@@ -416,7 +429,8 @@ export default {
 			let hash = location.hash.slice(1)
 			if (hash == 'cross') this.path = 'cross'
 			else this.path = ''
-			if (/^https?:\/\//.test(hash)) this.url = hash
+			if (/details;/.test(hash)) this.detail = hash.slice(8)
+			else if (/^https?:\/\//.test(hash)) this.url = hash
 		},
 		setDebugParam(text) {
 			try {
@@ -448,10 +462,14 @@ export default {
 				console.error(e)
 			}
 		},
+		rowMouseEnter(index) {
+			this.mouse = index;
+		},
 	},
 	components: {
 		Preview,
 		Cross,
+		Details,
 	},
 	mounted() {
 		window.addEventListener('hashchange', this.onHashChange)
@@ -471,6 +489,19 @@ export default {
 </script>
 <style lang="less">
 .root {
+	td button.mu-button.btn.mu-flat-button {
+		height: auto;    
+		line-height: unset;
+    	min-width: unset;
+    	font-size: unset;
+    	text-transform: none;
+	}
+	a.ok {
+		color: #4caf50;
+	}
+	a.error {
+		color: #f44336;
+	}
 	a.app {
 		color: #000;
 		text-decoration: underline;

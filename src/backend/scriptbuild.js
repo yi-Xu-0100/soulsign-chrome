@@ -120,7 +120,14 @@ export default function(task) {
 	task = Object.assign({}, utils.TASK_EXT, task);
 	let module = { exports: {} };
 	new Function('exports', 'module', ...inject_keys, task.code)(module.exports, module, ...inject_values);
+	task.filter = async function(result) {
+		if ("object" == typeof result) result = Object.assign({ summary: "NO_SUMMARY", detail: "" }, result);
+		else result = { summary: result, detail: "" };
+		return result;
+	};
 	task.check = module.exports.check;
-	task.run = module.exports.run;
+	task.run = async function(params) {
+		return await task.filter(await module.exports.run(params));
+	};
 	return task;
 }
