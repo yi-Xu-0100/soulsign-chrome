@@ -11,7 +11,7 @@
 				<template slot-scope="scope">
 					<td>
 						<mu-avatar :size="20">
-						<img :src="'chrome://favicon/'+scope.row.domain">
+						<img :src="'chrome://favicon/'+scope.row.url">
 						</mu-avatar>
 					</td>
 					<td>
@@ -19,7 +19,7 @@
 					</td>
 					<td>
 						<a :href="scope.row.url" target="_blank">
-							<span class="btn" :class="scope.row.success?'green':'red'">
+							<span class="btn" :class="!scope.row.errno?'green':'red'">
 								{{scope.row.message}}
 							</span>
 						</a>
