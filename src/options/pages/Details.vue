@@ -30,21 +30,29 @@
 		<mu-divider></mu-divider>
         <mu-sub-header>日志</mu-sub-header>
 		<mu-tabs :value.sync="active" inverse color="secondary" text-color="rgba(0, 0, 0, .54)"  center>
-			<mu-tab>源</mu-tab>
-			<mu-tab>概述</mu-tab>
-			<mu-tab>详情</mu-tab>
-			<mu-tab>域名列表</mu-tab>
+    		<mu-tooltip :placement="'top'" content="export.run().return">
+				<mu-tab>源</mu-tab>
+    		</mu-tooltip>
+    		<mu-tooltip :placement="'top'" content="export.run().return.summary">
+				<mu-tab>概述</mu-tab>
+    		</mu-tooltip>
+    		<mu-tooltip :placement="'top'" content="export.run().return.detail">
+				<mu-tab>详情</mu-tab>
+    		</mu-tooltip>
+    		<mu-tooltip :placement="'top'" content="export.run().return.list">
+				<mu-tab>域名列表</mu-tab>
+    		</mu-tooltip>
 		</mu-tabs>
-		<div class="result-text" v-if="active === 0">
+		<div class="result-plain" v-if="active === 0">
 			{{task.result}}
 		</div>
-		<div class="result-text" v-if="active === 1">
+		<div class="result-summary" v-if="active === 1">
 			{{task.result.summary}}
 		</div>
-		<div class="result-text" v-if="active === 2">
+		<div class="result-detail" v-if="active === 2">
 			{{task.result.detail}}
 		</div>
-		<div class="result-text" v-if="active === 3">
+		<div class="result-list" v-if="active === 3">
 			{{task.result.list}}
 		</div>
 	</mu-dialog>
