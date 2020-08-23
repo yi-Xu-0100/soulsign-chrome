@@ -121,8 +121,8 @@ export default function(task) {
 	let module = { exports: {} };
 	new Function('exports', 'module', ...inject_keys, task.code)(module.exports, module, ...inject_values);
 	task.filter = async function(result) {
-		if ("object" == typeof result) result = Object.assign({ summary: "NO_SUMMARY", detail: "" }, result);
-		else result = { summary: result, detail: "" };
+		if ("object" == typeof result) result = Object.assign({ summary: "NO_SUMMARY" }, result);
+		else result = { summary: result };
 		return result;
 	};
 	task.check = module.exports.check;

@@ -30,34 +30,60 @@
 		<mu-divider></mu-divider>
         <mu-sub-header>日志</mu-sub-header>
 		<mu-tabs :value.sync="active" inverse color="secondary" text-color="rgba(0, 0, 0, .54)"  center>
-    		<mu-tooltip :placement="'top'" content="export.run().return">
+			<mu-tooltip :placement="'top'" content="export.run().return">
 				<mu-tab>源</mu-tab>
-    		</mu-tooltip>
-    		<mu-tooltip :placement="'top'" content="export.run().return.summary">
+			</mu-tooltip>
+			<mu-tooltip :placement="'top'" content="export.run().return">
+				<mu-tab>表</mu-tab>
+			</mu-tooltip>
+			<mu-tooltip :placement="'top'" content="export.run().return.summary">
 				<mu-tab>概述</mu-tab>
-    		</mu-tooltip>
-    		<mu-tooltip :placement="'top'" content="export.run().return.detail">
+			</mu-tooltip>
+			<mu-tooltip :placement="'top'" content="export.run().return.detail">
 				<mu-tab>详情</mu-tab>
-    		</mu-tooltip>
-    		<mu-tooltip :placement="'top'" content="export.run().return.list">
+			</mu-tooltip>
+			<mu-tooltip :placement="'top'" content="export.run().return.list">
 				<mu-tab>域名列表</mu-tab>
-    		</mu-tooltip>
+			</mu-tooltip>
 		</mu-tabs>
 		<div class="result-plain" v-if="active === 0">
 			{{task.result}}
 		</div>
-		<div class="result-summary" v-if="active === 1">
-			{{task.result.summary}}
+		<div class="result-tree" v-if="active === 1">
+    		<ul>
+				<Tree v-for="(item, name, index) in task.result" v-bind:item="item" v-bind:name="name" v-bind:key="index"></Tree>
+    		</ul>
 		</div>
-		<div class="result-detail" v-if="active === 2">
-			{{task.result.detail}}
+		<div class="result-summary" v-if="active === 2">
+    		<div v-if="'object' == typeof task.result.summary">
+				<ul>
+					<Tree v-for="(item, name, index) in task.result.summary" v-bind:item="item" v-bind:name="name" v-bind:key="index"></Tree>
+				</ul>
+    		</div>
+    		<div v-else>
+				{{task.result.summary}}
+    		</div>
 		</div>
-		<div class="result-list" v-if="active === 3">
-			{{task.result.list}}
+		<div class="result-detail" v-if="active === 3">
+    		<div v-if="'object' == typeof task.result.detail">
+				<ul>
+					<Tree v-for="(item, name, index) in task.result.detail" v-bind:item="item" v-bind:name="name" v-bind:key="index"></Tree>
+				</ul>
+    		</div>
+    		<div v-else>
+				{{task.result.detail}}
+    		</div>
+		</div>
+		<div class="result-list" v-if="active === 4">
+    		<ul>
+				<Tree v-for="(item, name, index) in task.result.list" v-bind:item="item" v-bind:name="name" v-bind:key="index"></Tree>
+    		</ul>
 		</div>
 	</mu-dialog>
 </template>
 <script>
+import Tree from './Tree.vue'
+
 export default {
 	props: {
 		open: {},
@@ -97,11 +123,14 @@ export default {
 		close() {
 			location.href = '#'
 			this.$emit('update:open', false)
-		},
+		}
 	},
 	mounted() {
 		if (this.open) this.refresh()
-	}
+	},
+	components: {
+		Tree,
+	},
 }
 </script>
 <style lang="less">
@@ -110,8 +139,8 @@ export default {
 		padding-left: initial;
 	}
     .mu-dialog {    
-		width: 800px;
-    	max-width: 75%;
+		width: 900px;
+    	max-width: 85%;
     	font-size: initial;
 	}
 	table.mu-table-header,
