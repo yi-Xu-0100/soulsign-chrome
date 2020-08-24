@@ -17,6 +17,7 @@ export default function(task) {
 		let ss = m[1].split('.');
 		if (!task.domains.reduce(function(a, b) {
 				if (a) return true;
+				if ('*' == b) return true;
 				let dd = b.split('.');
 				if (dd.length != ss.length) return false;
 				for (let i = 0; i < ss.length; i++) {
@@ -119,7 +120,14 @@ export default function(task) {
 	task = Object.assign({}, utils.TASK_EXT, task);
 	let module = { exports: {} };
 	new Function('exports', 'module', ...inject_keys, task.code)(module.exports, module, ...inject_values);
+	task.filter = async function(result) {
+		if ("object" == typeof result) result = Object.assign({ summary: "NO_SUMMARY" }, result);
+		else result = { summary: result };
+		return result;
+	};
 	task.check = module.exports.check;
-	task.run = module.exports.run;
+	task.run = async function(params) {
+		return await task.filter(await module.exports.run(params));
+	};
 	return task;
 }

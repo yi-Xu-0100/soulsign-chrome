@@ -1,7 +1,7 @@
 {
   "name": "soulsign-chrome",
-  "version": "2.0.4",
-  "description": "crhome extension to cross domain",
+  "version": "2.0.6",
+  "description": "魂签，一款用于自动签到的 chrome 插件",
   "author": "inu1255 <inu1255@gmail.com>",
   "license": "MIT",
   "private": false,
@@ -72,16 +72,17 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/inu1255/chrome-cross-domain.git"
+    "url": "git+https://github.com/inu1255/soulsign-chrome.git"
   },
   "keywords": [
     "chrome",
     "extension",
     "cross",
-    "domain"
+    "domain",
+    "automation"
   ],
   "bugs": {
-    "url": "https://github.com/inu1255/chrome-cross-domain/issues"
+    "url": "https://github.com/inu1255/soulsign-chrome/issues"
   },
-  "homepage": "https://github.com/inu1255/chrome-cross-domain#readme"
+  "homepage": "https://github.com/inu1255/soulsign-chrome#readme"
 }
