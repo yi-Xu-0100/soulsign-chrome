@@ -2,11 +2,36 @@ const UPDATE_URL = "http://soulsignchrome.inu1255.cn";
 const UPDATE_FREQ = 5000; // 检查更新间隔
 // ----- change above -----
 var checkAt = 0; // 上次检查更新时间
-var files = {}; // 文件md5版本
+var files; // 文件md5版本
 const VERSION = "v1";
 self.addEventListener("install", function(event) {
 	console.log("sw install");
-	self.skipWaiting();
+	event.waitUntil(
+		fetch("/files.json")
+			.then((x) => x.json())
+			.then(
+				(m) =>
+					caches.open(VERSION).then(function(cache) {
+						var changes = [];
+						for (var k in m) {
+							(function(url) {
+								console.log("install: " + url);
+								changes.push(
+									fetch(url).then(function(response) {
+										return cache.put(new Request(UPDATE_URL + url), response.clone());
+									})
+								);
+							})(k);
+						}
+						files = m;
+						return Promise.all(changes);
+					}),
+				(e) => (files = {})
+			)
+			.then(function() {
+				return self.skipWaiting();
+			})
+	);
 });
 
 self.addEventListener("activate", (event) => {
@@ -17,7 +42,7 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", function(event) {
 	/** @type {Request} */
 	var req = event.request;
-	if (!req.url.startsWith("chrome-extension://")) return event.respondWith(fetch(req));
+	if (!req.url.startsWith("chrome-extension://")) return;
 	var url = req.url.replace(/^[^:]+:\/\/[^/]+/, UPDATE_URL);
 	var idx = url.indexOf("?");
 	if (idx >= 0) url = url.slice(0, idx);

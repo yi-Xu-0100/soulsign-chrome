@@ -1,7 +1,7 @@
 <template>
 	<div class="root">
 		<mu-appbar color="primary">
-			<div @click="go('#')" class="mu-appbar-title">魂签</div>
+			<div @click="go('#')" class="mu-appbar-title">魂签<small>2.0.6</small></div>
 			<mu-button @click="go('#cross')" flat slot="right">跨域管理</mu-button>
 			<mu-button @click="go('#')" flat slot="right">脚本管理</mu-button>
 			<mu-button @click="go('https://soulsign.inu1255.cn/',1)" flat slot="right">脚本推荐</mu-button>
