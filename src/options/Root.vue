@@ -32,7 +32,7 @@
 					</td>
 					<td>
 						<span v-for="domain in row.domains" :key="domain" :title="domain">
-							<img :src="'http://api.byi.pw/favicon?url='+domain3(domain)" :alt="domain">
+							<img :src="'chrome://favicon/https://'+domain3(domain)" :alt="domain">
 						</span>
 					</td>
 					<td>
@@ -44,9 +44,7 @@
 						<i-date :value="row.run_at"></i-date>
 					</td>
 					<td>
-						<span title="查看日志(暂未实现)" class="btn" :class="row.success_at>row.failure_at?'green':'red'">
-							{{row.result}}
-						</span>
+						<div title="查看日志(暂未实现)" class="btn" :class="row.success_at>row.failure_at?'green':'red'" v-html="row.result"></div>
 					</td>
 					<td>
 						<i-rate v-if="row.cnt" class="tac" width="72px" :value="row.ok/row.cnt||0">{{row.ok}}/{{row.cnt}}</i-rate>
@@ -73,7 +71,7 @@
 			</mu-data-table>
 		</mu-container>
 		<mu-dialog :width="480" :open="Boolean(body)" :fullscreen="fullscreen" @update:open="body=false">
-			<mu-flex justify-content="left" align-items="center" wrap="wrap" class="icon-flex-wrap">
+			<mu-flex align-items="center" wrap="wrap" class="icon-flex-wrap">
 				<mu-button @click="pick" color="primary">上传文件</mu-button>
 				<div style="flex:1"></div>
 				<mu-button style="margin-top:4px;" color="blue" icon @click="fullscreen=!fullscreen">
@@ -138,7 +136,7 @@ export default {
 			},
 			config: {},
 			ver: {},
-			fullscreen: localStorage.getItem('fullscreen') || false, // 代码编辑全屏
+			fullscreen: !!localStorage.getItem('fullscreen'), // 代码编辑全屏
 		}
 	},
 	watch: {
@@ -272,7 +270,7 @@ export default {
 			}
 		},
 		debugSetting(body) {
-			this.debugTaskParam = Object.assign({},body)
+			Object.assign(this.debugTaskParam, body)
 		},
 		set(task, i) {
 			let { name, _params, params } = task
@@ -435,10 +433,7 @@ export default {
 		},
 		async testTask(key, text) {
 			try {
-				let _params = {}
-				try {
-					_params = this.debugTaskParam || {}
-				} catch (error) {}
+				let _params = this.debugTaskParam || {}
 				let task = utils.buildScript(text)
 				let ok = await task[key](_params);
 				this.$toast.success(`返回结果: ${ok}`)
@@ -471,6 +466,19 @@ export default {
 </script>
 <style lang="less">
 .root {
+	td button.mu-button.btn.mu-flat-button {
+		height: auto;
+		line-height: unset;
+		min-width: unset;
+		font-size: unset;
+		text-transform: none;
+	}
+	a.ok {
+		color: #4caf50;
+	}
+	a.error {
+		color: #f44336;
+	}
 	a.app {
 		color: #000;
 		text-decoration: underline;

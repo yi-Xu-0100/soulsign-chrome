@@ -1,7 +1,7 @@
 {
   "name": "soulsign-chrome",
-  "version": "2.0.4",
-  "description": "crhome extension to cross domain",
+  "version": "2.0.6",
+  "description": "魂签，一款用于自动签到的 chrome 插件",
   "author": "inu1255 <inu1255@gmail.com>",
   "license": "MIT",
   "private": false,
@@ -22,7 +22,7 @@
     "lint": "eslint --ext .js,.vue src",
     "start": "webpack --config ./core/webpack.dev.js --hide-modules",
     "build": "webpack --config ./core/webpack.prod.js -p --progress  --hide-modules --colors && rimraf build.zip && cd build && jszip-cli add --ignore .DS_Store ./ --output ../build.zip",
-    "build-update": "webpack --config ./core/webpack.prod.js -p --progress  --hide-modules --colors && /opt/beu/bin.js build http://soulsignchrome.inu1255.cn 5 && rimraf build.zip && cd build && jszip-cli add --ignore .DS_Store ./ --output ../build.zip"
+    "build-update": "webpack --config ./core/webpack.prod.js -p --progress  --hide-modules --colors && /opt/beu/bin.js build http://127.0.0.1:8001/build 5 && rimraf build.zip && cd build && jszip-cli add --ignore .DS_Store ./ --output ../build.zip"
   },
   "devDependencies": {
     "@ffflorian/jszip-cli": "^3.1.0",
@@ -75,16 +75,17 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/inu1255/chrome-cross-domain.git"
+    "url": "git+https://github.com/inu1255/soulsign-chrome.git"
   },
   "keywords": [
     "chrome",
     "extension",
     "cross",
-    "domain"
+    "domain",
+    "automation"
   ],
   "bugs": {
-    "url": "https://github.com/inu1255/chrome-cross-domain/issues"
+    "url": "https://github.com/inu1255/soulsign-chrome/issues"
   },
-  "homepage": "https://github.com/inu1255/chrome-cross-domain#readme"
+  "homepage": "https://github.com/inu1255/soulsign-chrome#readme"
 }
