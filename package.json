@@ -22,7 +22,7 @@
     "lint": "eslint --ext .js,.vue src",
     "start": "webpack --config ./core/webpack.dev.js --hide-modules",
     "build": "webpack --config ./core/webpack.prod.js -p --progress  --hide-modules --colors && rimraf build.zip && cd build && jszip-cli add --ignore .DS_Store ./ --output ../build.zip",
-    "build-update": "webpack --config ./core/webpack.prod.js -p --progress  --hide-modules --colors && /opt/beu/bin.js build http://127.0.0.1:8001/build 5 && rimraf build.zip && cd build && jszip-cli add --ignore .DS_Store ./ --output ../build.zip"
+    "build-update": "webpack --config ./core/webpack.prod.js -p --progress  --hide-modules --colors && beu build http://soulsignchrome.inu1255.cn 5 && rimraf build.zip && cd build && jszip-cli add --ignore .DS_Store ./ --output ../build.zip"
   },
   "devDependencies": {
     "@ffflorian/jszip-cli": "^3.1.0",
@@ -35,6 +35,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.26.0",
+    "beu": "^1.0.0",
     "buble": "^0.16.0",
     "buble-loader": "^0.4.1",
     "clean-webpack-plugin": "^0.1.17",
