@@ -59,6 +59,7 @@ self.addEventListener("fetch", function(event) {
 			.then(function(m) {
 				return caches.open(VERSION).then(function(cache) {
 					var changes = [];
+					files = files || {};
 					for (var k in m) {
 						var v = m[k];
 						if (v == files[k]) delete files[k];
