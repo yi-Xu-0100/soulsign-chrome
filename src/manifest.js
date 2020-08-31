@@ -16,6 +16,7 @@ module.exports = {
 		'notifications',
 		// 'identity',
 		// 'identity.email',
+		'webNavigation',
 		'webRequest',
 		'webRequestBlocking'
 	],

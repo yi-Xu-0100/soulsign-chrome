@@ -232,6 +232,7 @@ function extTask() {
 		version: function(version, soulsign_version = getManifest().version) {
 			return compareVersions(soulsign_version, version);
 		},
+		sleep: utils.sleep,
 	};
 }
 

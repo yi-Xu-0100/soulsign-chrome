@@ -5,7 +5,7 @@
 ### 使用方法
 
 1. 手动安装: 下载[build.zip](https://github.com/inu1255/soulsign-chrome/blob/master/build.zip)并解压，选项->更多工具->扩展程序->开发者模式->加载已解压的扩展程序
-2. [chrome网上应用店安装](https://chrome.google.com/webstore/detail/%E9%AD%82%E7%AD%BE/llbielhggjekmfjikgkcaloghnibafdl?hl=zh-CN)
+2. <del>[chrome网上应用店安装](https://chrome.google.com/webstore/detail/%E9%AD%82%E7%AD%BE/llbielhggjekmfjikgkcaloghnibafdl?hl=zh-CN)</del>(由于不能通过审核,没有更新了)
 
 **firefox** [安装](https://addons.mozilla.org/zh-CN/firefox/addon/%E9%AD%82%E7%AD%BE/)
 
@@ -27,6 +27,7 @@
 20200827: 支持 `查看日志` 页面
 
 ![image](https://user-images.githubusercontent.com/42897857/91413377-9a916f80-e87d-11ea-9109-20708287e39d.png)
+20200831: 支持类似[puppeteer](https://github.com/GoogleChrome/puppeteer#readme)模拟点击等功能, [使用说明](#模拟点击)
 
 ### 计划:
 
@@ -152,6 +153,10 @@ exports.check = async function() {
 3. `细节/日志` 页面可以 `复选` 分域名 `复制`，默认可复制的信息中有 `domain`, `url`, `message`, `errno`，其他信息需要用户自行开启选项，添加后复制。
 4. `细节/日志` 中的 `域名` 不仅拥有 `执行结果` 的两种颜色，还支持 `errno = 2 : orange`、`errno = 3 : orchid`、`errno = 4 : pink`、`errno = 5 : brown`。
 5. `表单展开项` 中的 `JSON` 树默认仅展开一层。
+
+### 模拟点击
+
+请参考demo脚本 [京东金融PC](https://github.com/inu1255/soulsign-chrome/tree/master/public/demos/jr.jd.js) 和 [阿里云签到](https://github.com/inu1255/soulsign-chrome/tree/master/public/demos/club.aliyun.js)
 
 ### 思路
 

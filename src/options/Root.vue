@@ -259,9 +259,9 @@ export default {
 					try {
 						let { data } = await utils.axios.get(task.updateURL);
 						let item = utils.compileTask(data);
-                        if (0 < (beUtils.compareVersions(item.version, task.version))) {
-                            map[task.key] = item.version;
-                        }
+						if (0 < (beUtils.compareVersions(item.version, task.version))) {
+							map[task.key] = item.version;
+						}
 					} catch (error) {
 						console.error(task.name, '获取更新失败');
 					}
@@ -479,6 +479,11 @@ export default {
 				}, 300);
 			}
 		})
+		if (!chrome.webNavigation) {
+			this.$message.confirm('新增模拟登录功能，该功能无法自动更新，是否下载新的插件?').then(({ result }) => {
+				if (result) window.open('https://github.com/inu1255/soulsign-chrome#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95')
+			})
+		}
 	}
 }
 </script>

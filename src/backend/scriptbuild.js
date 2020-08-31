@@ -4,29 +4,92 @@
 import axios from "axios";
 import utils from "./utils";
 
+const evt = document.createElement("div");
+chrome.tabs.onUpdated.addListener(function(tabId, info) {
+	let event = new CustomEvent(tabId + ":" + info.status, {detail: info});
+	evt.dispatchEvent(event);
+});
+
+function checkDomain(domains, url) {
+	let m = /https?:\/\/([^:\/]+)/.exec(url);
+	if (!m) return false;
+	let ss = m[1].split(".");
+	return domains.reduce(function(a, b) {
+		if (a) return true;
+		if ("*" == b) return true;
+		let dd = b.split(".");
+		if (dd.length != ss.length) return false;
+		for (let i = 0; i < ss.length; i++) {
+			if (dd[i] != "*" && ss[i] != dd[i]) return false;
+		}
+		return true;
+	}, false);
+}
+
+function frameRunner(tabId, frameId, domains, url) {
+	return {
+		url,
+		eval(code) {
+			return new Promise(function(resolve, reject) {
+				chrome.tabs.executeScript(tabId, {code, frameId, runAt: "document_end"}, function(result) {
+					resolve(result && result[0]);
+				});
+			});
+		},
+		waitLoaded(timeout) {
+			return new Promise(function(resolve, reject) {
+				function fn() {
+					resolve(true);
+					evt.removeEventListener(tabId + ":complete", fn);
+				}
+				evt.addEventListener(tabId + ":complete", fn);
+				if (timeout > 0)
+					setTimeout(function() {
+						resolve(false);
+						evt.removeEventListener(tabId + ":complete", fn);
+					}, timeout);
+			});
+		},
+		async waitUntil(selector, retryCount = 10) {
+			while (--retryCount >= 0) {
+				if (await this.eval(`!!document.querySelector(${JSON.stringify(selector)})`)) return true;
+				await utils.sleep(1e3);
+			}
+			return await this.eval(`!!document.querySelector(${JSON.stringify(selector)})`);
+		},
+		async click(selector, waitCount = 10) {
+			if (await this.waitUntil(selector, waitCount)) {
+				await this.eval(`document.querySelector(${JSON.stringify(selector)}).click()`);
+				return true;
+			}
+			return false;
+		},
+		async value(selector, value, waitCount = 10) {
+			if (await this.waitUntil(selector, waitCount)) {
+				await this.eval(`document.querySelector(${JSON.stringify(selector)}).value=${JSON.stringify(value)}`);
+				return true;
+			}
+			return false;
+		},
+		iframes() {
+			return new Promise(function(resolve, reject) {
+				chrome.webNavigation.getAllFrames({tabId: tabId}, function(details) {
+					resolve(details.filter((x) => checkDomain(domains, x.url)).map((x) => frameRunner(tabId, x.frameId, domains, x.url)));
+				});
+			});
+		},
+	};
+}
+
 /**
  *
  * @param {soulsign.Task} task 脚本允许访问的
  */
 export default function(task) {
 	let request = axios.create({timeout: 10e3});
+	const domains = task.domains.concat();
 	request.interceptors.request.use(function(config) {
-		let m = /https?:\/\/([^:\/]+)/.exec(config.url);
-		if (!m) return Promise.reject(`domain配置不正确`);
-		let ss = m[1].split(".");
-		if (
-			!task.domains.reduce(function(a, b) {
-				if (a) return true;
-				if ('*' == b) return true;
-				let dd = b.split('.');
-				if (dd.length != ss.length) return false;
-				for (let i = 0; i < ss.length; i++) {
-					if (dd[i] != "*" && ss[i] != dd[i]) return false;
-				}
-				return true;
-			}, false)
-		)
-			return Promise.reject(`domain配置不正确`);
+		if (!checkDomain(domains, config.url)) return Promise.reject(`domain配置不正确`);
 		if (config.headers) {
 			if (config.headers["Referer"]) {
 				config.headers["_referer"] = config.headers["Referer"];
@@ -93,7 +156,7 @@ export default function(task) {
 			if (!grant.has("notify")) throw "需要@grant notify";
 			let n = new Notification(task.name, {
 				body,
-				icon: 'chrome://favicon/https://' + task.domains[0]
+				icon: "chrome://favicon/https://" + task.domains[0],
 			});
 			n.onclick = function() {
 				this.close();
@@ -102,6 +165,23 @@ export default function(task) {
 			setTimeout(function() {
 				n.close();
 			}, timeout || 300e3);
+		},
+		open(url, dev, fn) {
+			if (!checkDomain(domains, url)) return Promise.reject(`domain配置不正确`);
+			return new Promise(function(resolve, reject) {
+				chrome.windows.create(
+					dev ? {left: 0, top: 0, width: window.screen.availWidth, height: window.screen.availHeight, focused: true} : {state: "minimized", focused: false},
+					function(w) {
+						chrome.tabs.create({url, active: true, selected: true, windowId: w.id}, function(tab) {
+							Promise.resolve(frameRunner(tab.id, 0, domains, url))
+								.then((x) => x.waitLoaded().then(() => x))
+								.then(fn)
+								.then(resolve, reject)
+								.finally(() => chrome.windows.remove(w.id));
+						});
+					}
+				);
+			});
 		},
 	};
 	if (!grant.has("eval")) {
