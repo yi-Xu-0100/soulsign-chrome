@@ -211,10 +211,10 @@ function filTask(task, result = task.result) {
 			},
 		],
 	};
-	if ("object" == typeof result) {
+	if ("object" == typeof result && result.summary) {
 		base = Object.assign(base, result);
 	} else {
-		base.summary = result;
+		base.summary = result + '';
 		base.detail[0].message = result;
 		if (task.loginURL)
 			base.detail[0].url = task.loginURL.match(/([^:]+:\/\/[^\/]+)+(.*)/)[Number(!base.detail[0].errno)];

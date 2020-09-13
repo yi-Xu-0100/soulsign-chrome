@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name              阿里云签到
 // @namespace         https://soulsign.inu1255.cn?account=inu1255
-// @version           1.0.2
+// @version           1.0.3
 // @author            inu1255
 // @loginURL          https://account.aliyun.com/login/qr_login.htm?oauth_callback=https%3A%2F%2Fclub.aliyun.com%2F%23%2F
 // @updateURL         https://soulsign.inu1255.cn/script/inu1255/阿里云签到
