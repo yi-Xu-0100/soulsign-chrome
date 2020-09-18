@@ -169,19 +169,14 @@ export default function(task) {
 		open(url, dev, fn) {
 			if (!checkDomain(domains, url)) return Promise.reject(`domain配置不正确`);
 			return new Promise(function(resolve, reject) {
-				chrome.windows.create({left: 0, top: 0, width: window.screen.availWidth, height: window.screen.availHeight, focused: dev},
-					function(w) {
-                        if (!dev) chrome.windows.update(w.id,{state: "minimized",drawAttention: false, focused: false})
-						chrome.tabs.create({url, active: true, windowId: w.id}, function(tab) {
+						chrome.tabs.create({url, active: dev}, function(tab) {
 							Promise.resolve(frameRunner(tab.id, 0, domains, url))
 								.then((x) => x.waitLoaded().then(() => x))
 								.then(fn)
 								.then(resolve, reject)
-								.finally(() => chrome.windows.remove(w.id));
+								.finally(() => chrome.tabs.remove(tab.id));
 						});
-					}
-				);
-			});
+					});
 		},
 	};
 	if (!grant.has("eval")) {
