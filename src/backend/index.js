@@ -143,6 +143,7 @@ async function upgrade() {
 			try {
 				let { data } = await utils.axios.get(task.updateURL);
 				let item = utils.compileTask(data);
+				// TODO: 脚本增加 @minSDK 标记，以便插件版本低时不更新脚本
 				if (0 < utils.compareVersions(item.version, task.version)) {
 					let changed = false;
 					for (let k of ['author', 'name', 'grants', 'domains']) {

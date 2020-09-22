@@ -29,12 +29,23 @@ function checkDomain(domains, url) {
 function frameRunner(tabId, frameId, domains, url) {
 	return {
 		url,
-		eval(code) {
+		eval(code, ...args) {
+			if (typeof code === "function") code = `(${code})(${args.map((x) => JSON.stringify(x))});`;
 			return new Promise(function(resolve, reject) {
 				chrome.tabs.executeScript(tabId, {code, frameId, runAt: "document_end"}, function(result) {
 					resolve(result && result[0]);
 				});
 			});
+		},
+		inject(code, ...args) {
+			if (typeof code === "function") code = `(${code})(${args.map((x) => JSON.stringify(x))});`;
+			return this.eval(function(code) {
+				var s = document.createElement("script");
+				s.setAttribute("soulsign", "");
+				s.innerHTML = code;
+				console.log(document.head, document.documentElement);
+				(document.documentElement || document.head).appendChild(s);
+			}, code);
 		},
 		waitLoaded(timeout) {
 			return new Promise(function(resolve, reject) {
@@ -52,21 +63,21 @@ function frameRunner(tabId, frameId, domains, url) {
 		},
 		async waitUntil(selector, retryCount = 10) {
 			while (--retryCount >= 0) {
-				if (await this.eval(`!!document.querySelector(${JSON.stringify(selector)})`)) return true;
+				if (await this.eval((s) => !!document.querySelector(s), selector)) return true;
 				await utils.sleep(1e3);
 			}
-			return await this.eval(`!!document.querySelector(${JSON.stringify(selector)})`);
+			return await this.eval((s) => !!document.querySelector(s), selector);
 		},
 		async click(selector, waitCount = 10) {
 			if (await this.waitUntil(selector, waitCount)) {
-				await this.eval(`document.querySelector(${JSON.stringify(selector)}).click()`);
+				await this.eval((s) => document.querySelector(s).click(), selector);
 				return true;
 			}
 			return false;
 		},
 		async value(selector, value, waitCount = 10) {
 			if (await this.waitUntil(selector, waitCount)) {
-				await this.eval(`document.querySelector(${JSON.stringify(selector)}).value=${JSON.stringify(value)}`);
+				await this.eval((s, v) => (document.querySelector(s).value = v), selector, value);
 				return true;
 			}
 			return false;
@@ -166,17 +177,46 @@ export default function(task) {
 				n.close();
 			}, timeout || 300e3);
 		},
-		open(url, dev, fn) {
+		openWindow(url, dev, fn, preload) {
 			if (!checkDomain(domains, url)) return Promise.reject(`domain配置不正确`);
 			return new Promise(function(resolve, reject) {
-						chrome.tabs.create({url, active: dev}, function(tab) {
-							Promise.resolve(frameRunner(tab.id, 0, domains, url))
-								.then((x) => x.waitLoaded().then(() => x))
-								.then(fn)
-								.then(resolve, reject)
-								.finally(() => chrome.tabs.remove(tab.id));
+				chrome.windows.create(
+					dev
+						? {left: 0, top: 0, width: window.screen.availWidth, height: window.screen.availHeight, focused: dev, type: "normal"}
+						: {state: "minimized", focused: false, type: "normal"},
+					function(w) {
+						if (!dev) chrome.windows.update(w.id, {state: "minimized", drawAttention: false, focused: false});
+						inject
+							.openTab(url, true, fn, preload, w.id)
+							.then(resolve, reject)
+							.finally(() => chrome.windows.remove(w.id));
+					}
+				);
+			});
+		},
+		openTab(url, dev, fn, preload, windowId) {
+			if (!checkDomain(domains, url)) return Promise.reject(`domain配置不正确`);
+			return new Promise(function(resolve, reject) {
+				chrome.tabs.create({url, active: dev, windowId}, function(tab) {
+					let pms = Promise.resolve();
+					if (preload) {
+						if (typeof preload === "function") preload = `(${preload})();`;
+						pms = new Promise(function(resolve, reject) {
+							chrome.cookies.set({url, name: "__soulsign_inject__", value: encodeURIComponent(preload)}, resolve);
 						});
-					});
+					}
+					pms.then(() => frameRunner(tab.id, 0, domains, url))
+						.then((x) => x.waitLoaded().then(() => x))
+						.then(fn)
+						.then(resolve, reject)
+						.finally(() => chrome.tabs.remove(tab.id));
+				});
+			});
+		},
+		open(url, dev, fn, preload) {
+			if (!checkDomain(domains, url)) return Promise.reject(`domain配置不正确`);
+			if (/macintosh|mac os x/i.test(navigator.userAgent)) return inject.openWindow(url, dev, fn, preload);
+			return inject.openTab(url, dev, fn, preload);
 		},
 	};
 	if (!grant.has("eval")) {
