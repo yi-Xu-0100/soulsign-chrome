@@ -16,7 +16,7 @@ module.exports = {
     // devtools: resolve('./devtools'),
     background: resolve('./backend'),
     // panel: resolve('./devtools/panel'),
-    // inject: resolve('./content/inject'),
+    inject: resolve('./content/inject'),
   },
   output: {
     path: path.join(__dirname, '..', 'build'),

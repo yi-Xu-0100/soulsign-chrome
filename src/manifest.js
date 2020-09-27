@@ -1,6 +1,6 @@
 module.exports = {
 	name: '魂签',
-	version: '2.2.0',
+	version: '2.3.0',
 	description: '自动签到',
 	author: 'inu1255',
 	manifest_version: 2,
@@ -30,12 +30,12 @@ module.exports = {
 	},
 	//   devtools_page: 'pages/devtools.html',
 	options_page: 'pages/options.html',
-	// content_scripts: [{
-	//     js: ['js/inject.js'],
-	//     run_at: 'document_end',
-	//     matches: ['<all_urls>'],
-	//     all_frames: true
-	// }],
+	content_scripts: [{
+		js: ['js/manifest.js', 'js/vendor.js', 'js/inject.js'],
+	    run_at: 'document_start',
+	    matches: ['<all_urls>'],
+	    all_frames: true
+	}],
 	content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	// web_accessible_resources: ['panel.html', 'js/content.js']
 };
